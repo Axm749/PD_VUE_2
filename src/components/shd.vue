@@ -3,10 +3,8 @@
     <v-card 
       class="pa-5 ma-5" 
     >
-      <h1 class="mb-5">Система хранения данных</h1>
+      <h1 class="mt-5">Система хранения данных</h1>
 
-      
-      
       <v-text-field
         outlined
         type="number"
@@ -16,7 +14,7 @@
         :rules="rule"
         hide-details="auto"
         v-model.number="users"
-        class="mb-5"
+        class="mt-5"
       />
       
       <v-text-field
@@ -29,25 +27,25 @@
         :rules="rule"
         hide-details="auto"
         v-model.number="days"
-        class="mb-5"
+        class="mt-5"
       />
-
+<!-- стандратный ли узел -->
       <v-checkbox
         info
         hide-details
         label="Узел не стандартный?"
         v-model="standart"
-        class="mb-5"
+        class="mt-5"
       />
-
+<!-- гиперконвергентность -->
       <v-checkbox
         info
         hide-details
         label="Система гиперконвергентна?"
         v-model="converg"
-        class="mb-5"
+        class="mt-5"
       />
-      
+      <!-- настройки сервера -->
       <template v-if="converg">
         <v-dialog
           v-model="dialog1"
@@ -57,7 +55,7 @@
         >
           <template v-slot:activator="{ props1 }">
             <v-btn
-              class="mt-2 mb-5"
+              class="mt-2 mt-5"
               width="100%"
               color="primary"
               v-bind="props1"
@@ -214,9 +212,11 @@
 
 
           </v-card> -->
+          
+          <!-- сами параметры через v-for -->
           <v-card
             outlined
-            class="pa-5 mb-5"
+            class="pa-5 mt-5"
           >
             
             <h1>Дополнительные сервера</h1>
@@ -225,7 +225,7 @@
             <div 
               v-for="(server, index) in convServParam"
               :key="index"
-              class="mb-5"
+              class="mt-5"
             >
               
               <br>
@@ -239,7 +239,7 @@
                 placeholder="hello"
                 :rules="rule"
                 hide-details="auto"
-                class="mb-5"
+                class="mt-5"
               />
               
               <v-text-field
@@ -252,7 +252,7 @@
                 label="количество (шт)"
                 :rules="rule"
                 hide-details="auto"
-                class="mb-5"
+                class="mt-5"
               />
               
               <v-text-field
@@ -265,12 +265,12 @@
                 label="объём (ГБ)"
                 :rules="rule"
                 hide-details="auto"
-                class="mb-5"
+                class="mt-5"
               />
               <v-btn
                 color="error"
                 @click="deleteItem(server, index)"
-                class="mb-5"
+                class="mt-5"
               >  <v-icon>mdi-trash-can</v-icon>  удалить </v-btn>
               <hr>
 
@@ -279,14 +279,14 @@
             <v-btn
               color="primary"
               @click="extendConvServParamList"
-              class="mb-5"
+              class="mt-5"
             >добавить</v-btn>
 
             <v-btn
               color="success"
               @click="sumItUp"
-              class="mb-5"
-            >суммарный объём серверов</v-btn>
+              class="mt-5"
+            >суммарный объём</v-btn>
             
             
             
@@ -299,7 +299,7 @@
       </template>
 
       
-      
+      <!-- если диск нестандартный -->
       <div v-show="standart">
         <v-text-field
           flat
@@ -311,8 +311,9 @@
           :rules="rule"
           hide-details="auto"
           v-model.number="capacity"
-        ></v-text-field>
-        <br />
+          class="mt-5"
+        />
+        
         <v-text-field
           flat
           type="number"
@@ -323,9 +324,11 @@
           :rules="rule"
           hide-details="auto"
           v-model.number="discs"
-        ></v-text-field>
-        <br />
+          class="mt-5"
+        />
       </div>
+
+      <!-- выбор режима -->
       <v-select
         required
         v-model="options.value"
@@ -337,7 +340,7 @@
         item-text="name"
         item-value="value"
         label="Выберите режим"
-        class="mb-5"
+        class="mt-5"
       />
       
       <v-text-field
@@ -353,14 +356,17 @@
         :rules="rule"
         hide-details="auto"
         v-model.number="mBR"
-        class="mb-5"
+        class="mt-5"
       ></v-text-field>
+
+      <!-- старт -->
       <v-btn 
         @click="start" 
         color="primary" 
-        class="mb-5"
+        class="mt-5"
       >Старт</v-btn>
-      <br>
+      
+      
       <template v-if="options.value == 'video'">
         <v-dialog
           v-model="dialog"
@@ -368,6 +374,7 @@
           width="auto"
           :scrollable="false"
           aria-hidden="true"
+          class="mt-5"
         >
           <template v-slot:activator="{ props }">
             <v-btn
@@ -375,15 +382,23 @@
               color="primary"
               v-bind="props"
               @click="getVideo"
+              class="mt-5"
               ><v-icon>mdi-cog</v-icon>
               Дополнительно
             </v-btn>
           </template>
+
           <video1 @cam_bitrate="getMbrVideo" />
+
         </v-dialog>
       </template>
     </v-card>
-    <v-container fluid>
+
+
+<!-- результаты вычислений -->
+    <v-card 
+      class="pa-5 ma-5"
+    >
       <h2>Вывод для раздела системы хранения данных</h2>
       <div v-show="started">
         <p>Требуемый объём для хранения видеоданных {{ volume }} TiB</p>
@@ -400,7 +415,7 @@
         <p>Количество узлов {{ usli }} шт</p>
         <p>Количество узлов с резервированием {{ usli + 2 }} шт</p>
       </div>
-    </v-container>
+    </v-card>
   </div>
 </template>
 
