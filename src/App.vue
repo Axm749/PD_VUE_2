@@ -14,6 +14,42 @@
     ref="nusli"
     />
 
+    <v-expansion-panels
+      class="mt-6"
+      multiple
+      accordion
+    >
+      <v-expansion-panel>
+        <v-expansion-panel-header>СХД</v-expansion-panel-header>
+        <v-expansion-panel-content
+        >
+          <shd
+            @Power="getpower"
+            @Usli="getUsli"
+          />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header>электропитание</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <power
+          ref="npower"
+          />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header>охлаждение</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <condition
+          ref="nusli"
+          />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      
+    </v-expansion-panels>
+
   </v-app>
 </template>
 
@@ -56,9 +92,26 @@ body{
     width: 100%;
     height: 100%;
     background-size: 200% 200%;
-    background-image: linear-gradient( 0deg, #2ebf91, #4286f4);
-    animation: bg 7s ease infinite;
+    /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
+    /* background-image: linear-gradient( 120deg, #1288ab, #e542f4); */
+    background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
+    animation: bg 5s ease infinite;
 }
+@keyframes bg {
+    0%{
+        background-position: 0%, 100%;
+        
+    }
+    50%{
+        background-position: 100% 0%;
+    }
+    100%{
+        background-position: 0%, 100%;
+    } 
+}
+/* @keyframes bg {
+  to { transform: translate(-50%, -50%) rotate(1turn); }
+} */
 
 .container{
     padding: 20px;
@@ -76,4 +129,21 @@ body{
 input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 -webkit-appearance: none;
 }
+
+.module_bg{
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 20px;
+  /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.127); */
+  /* margin: 5px; */
+}
+
+.inCardTab{
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+
 </style>

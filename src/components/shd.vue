@@ -1,9 +1,12 @@
 <template>
-  <div>
+  <div class="module_bg">
+    
+
+    <!-- ввод требований -->
     <v-card 
-      class="pa-5 ma-5" 
+      class="pa-5" 
     >
-      <h1 class="mt-5">Система хранения данных</h1>
+      <h1>Система хранения данных</h1>
 
       <v-text-field
         outlined
@@ -29,7 +32,7 @@
         v-model.number="days"
         class="mt-5"
       />
-<!-- стандратный ли узел -->
+      <!-- стандратный ли узел -->
       <v-checkbox
         info
         hide-details
@@ -37,7 +40,7 @@
         v-model="standart"
         class="mt-5"
       />
-<!-- гиперконвергентность -->
+      <!-- гиперконвергентность -->
       <v-checkbox
         info
         hide-details
@@ -49,6 +52,7 @@
       <template v-if="converg">
         <v-dialog
           v-model="dialog1"
+          transition="dialog-bottom-transition"
           width="80%"
           :scrollable="false"
           aria-hidden="true"
@@ -65,153 +69,6 @@
             </v-btn>
           </template>
 
-
-          <!-- <v-card 
-            class="pa-5 mb-5"
-            outlined
-          >
-            <h1 class="mb-5">Настройки сервера</h1>
-            
-              <v-text-field
-
-                type="number"
-                required
-                outlined
-                clearable
-                label="Дисковая память сервера управления (Гбайт)"
-                :rules="rule"
-                hide-details="auto"
-                v-model="ManageServer_capacity"
-                class="mb-5"
-              />
-            
-              <v-text-field
-
-                type="number"
-                required
-                outlined
-                clearable
-                label="Количество серверов управления"
-                :rules="rule"
-                hide-details="auto"
-                v-model.number="ManageServer_count"
-                class="mb-5"
-              />
-             
-              <v-text-field
-                
-                type="number"
-                required
-                outlined
-                clearable
-                label="Дисковая память сервера управления архивом (Гбайт)"
-                :rules="rule"
-                hide-details="auto"
-                v-model.number="ArchManageServer_capacity"
-                class="mb-5"
-              />
-              
-              <v-text-field
-
-                type="number"
-                required
-                outlined
-                clearable
-                label="Количество серверов управления архивом"
-                :rules="rule"
-                hide-details="auto"
-                v-model.number="ArchManageServer_count"
-                class="mb-5"
-              />
-
-              <div v-if="options.value == 'video'">
-                <v-text-field
-
-                  type="number"
-                  required
-                  outlined
-                  clearable
-                  label="Дисковая память сервера видеоархива (Гбайт)"
-                  :rules="rule"
-                  hide-details="auto"
-                  v-model.number="ArchVideoServer_capacity"
-                  class="mb-5"
-                />
-                
-                <v-text-field
-
-                  type="number"
-                  required
-                  outlined
-                  clearable
-                  label="Количество серверов видеоархива"
-                  :rules="rule"
-                  hide-details="auto"
-                  v-model.number="ArchVideoServer_count"
-                  class="mb-5"
-                />
-                
-                <v-text-field
-
-                  type="number"
-                  required
-                  outlined
-                  clearable
-                  label="Дисковая память серверов ситуационного видеонаблюдения (Гбайт)"
-                  :rules="rule"
-                  hide-details="auto"
-                  v-model.number="SituationVideoServer_capacity"
-                  class="mb-5"
-                />
-                
-                <v-text-field
-
-                  type="number"
-                  required
-                  outlined
-                  clearable
-                  label="Количество серверов ситуационного видеонаблюдения"
-                  :rules="rule"
-                  hide-details="auto"
-                  v-model.number="SituationVideoServer_count"
-                  class="mb-5"
-                />
-              </div>
-            
-              <v-text-field
-
-                type="number"
-                required
-                outlined
-                clearable
-                label="Дисковая память сервера сопряжения (Гбайт)"
-                :rules="rule"
-                hide-details="auto"
-                v-model.number="ConnectServer_capacity"
-                class="mb-5"
-              />
-              
-              <v-text-field
-
-                type="number"
-                required
-                outlined
-                clearable
-                label="Количество серверов сопряжения"
-                :rules="rule"
-                hide-details="auto"
-                v-model.number="ConnectServer_count"
-              />
-
-
-
-
-
-
-
-
-
-          </v-card> -->
           
           <!-- сами параметры через v-for -->
           <v-card
@@ -225,7 +82,7 @@
             <div 
               v-for="(server, index) in convServParam"
               :key="index"
-              class="mt-5"
+              class="mt-5 inCardTab"
             >
               
               <br>
@@ -272,14 +129,13 @@
                 @click="deleteItem(server, index)"
                 class="mt-5"
               >  <v-icon>mdi-trash-can</v-icon>  удалить </v-btn>
-              <hr>
 
             </div>
 
             <v-btn
               color="primary"
               @click="extendConvServParamList"
-              class="mt-5"
+              class="mt-5  mr-5"
             >добавить</v-btn>
 
             <v-btn
@@ -359,14 +215,8 @@
         class="mt-5"
       ></v-text-field>
 
-      <!-- старт -->
-      <v-btn 
-        @click="start" 
-        color="primary" 
-        class="mt-5"
-      >Старт</v-btn>
-      
-      
+
+      <!-- доступ к вычислениям видеонаблюдения -->
       <template v-if="options.value == 'video'">
         <v-dialog
           v-model="dialog"
@@ -377,12 +227,13 @@
           class="mt-5"
         >
           <template v-slot:activator="{ props }">
+            <!-- <br> -->
             <v-btn
               max-width="100%"
               color="primary"
               v-bind="props"
               @click="getVideo"
-              class="mt-5"
+              class="mt-5 mr-5"
               ><v-icon>mdi-cog</v-icon>
               Дополнительно
             </v-btn>
@@ -392,31 +243,52 @@
 
         </v-dialog>
       </template>
+
+
+
+      <!-- старт -->
+      <v-btn 
+        @click="start" 
+        color="primary" 
+        class="mt-5"
+      >Старт</v-btn>
     </v-card>
 
 
-<!-- результаты вычислений -->
+    <!-- результаты вычислений -->
     <v-card 
-      class="pa-5 ma-5"
+      class="pa-5 mt-5"
+      v-show="started"
     >
-      <h2>Вывод для раздела системы хранения данных</h2>
-      <div v-show="started">
-        <p>Требуемый объём для хранения видеоданных {{ volume }} TiB</p>
+      <!-- <h2>Вывод для раздела системы хранения данных</h2> -->
+      <!-- <div v-show="started"> -->
+        <p>Требуемый объём для хранения видеоданных <strong>{{ volume }} TiB</strong> </p>
         <p>
-          Требуемый объём СХД с учетом перевода TiB в Тбайт {{ volume1 }} Тбайт
+          Требуемый объём СХД с учетом перевода TiB в Тбайт <strong>{{ volume1 }} Тбайт</strong>
         </p>
         <div v-show="converg">
-          <p>Объём с резервным копированием {{ volume2 }} Тбайт</p>
-          <p>
-            С учетом резерва требуемая от СХД полезная ёмкость составит
-            {{ volume3 }} Тбайт
-          </p>
+          <p>Объём с резервным копированием <strong>{{ volume2 }} Тбайт</strong></p>
+          <p>С учетом резерва требуемая от СХД полезная ёмкость составит
+            <strong>{{ volume3 }} Тбайт;</strong></p>
         </div>
-        <p>Количество узлов {{ usli }} шт</p>
-        <p>Количество узлов с резервированием {{ usli + 2 }} шт</p>
-      </div>
+        <p>Узлов без резервирования <strong>{{ usli }} шт;</strong></p>
+        <p>Узлов с резервированием <strong>{{ usli + 2 }} шт.</strong></p>
+
+        <v-btn
+
+          class="mt-5"
+        >сохранить</v-btn>
+        <v-btn
+          @click="started=false"
+          class="mt-5 ml-5"
+        >скрыть</v-btn>
+      <!-- </div> -->
     </v-card>
   </div>
+
+  
+
+
 </template>
 
 <script>
@@ -430,10 +302,13 @@ export default {
   data() {
     return {
       convServParam: [
-        {id: 0, title: `сервер управления`, count: 1, volume: 10,},
-        {id: 1, title: `сервер архивного управления`, count: 1, volume: 20,},
-        {id: 2, title: `сервер сопряжения`, count: 1, volume: 20,}
+        {id: 0, title: `сервер управления`, count: 1, volume: 300},
+        {id: 1, title: `сервер архивного управления`, count: 1, volume: 300},
+        {id: 2, title: `сервер сопряжения`, count: 3, volume: 600},
+        {id: 3, title: `сервер ситуационного видеонаблюдения`, count: 1, volume: 300},
+        {id: 4, title: `сервер другой`, count: 3, volume: 7680}
       ],
+      // список дополнительных серверов вносящих свои требования к объёму схд
       sumItUpAnswer: 0, //объём всех серверов вместе взятых, ГБ
 
 
@@ -463,20 +338,22 @@ export default {
         { name: "Система видеонаблюдения", value: "video" },
         { name: "Ручной режим", value: "user" },
       ], //Выбор режимов
-      ManageServer_count: '...',
-      ManageServer_capacity:'...',
-      ArchManageServer_count: '...',
-      ArchManageServer_capacity:'...',
-      ArchVideoServer_count: '...',
-      ArchVideoServer_capacity:'...',
-      SituationVideoServer_count: '...',
-      SituationVideoServer_capacity:'...',
-      ConnectServer_count: '...',
-      ConnectServer_capacity:'...',
+      // ManageServer_count: '...',
+      // ManageServer_capacity:'...',
+      // ArchManageServer_count: '...',
+      // ArchManageServer_capacity:'...',
+      // ArchVideoServer_count: '...',
+      // ArchVideoServer_capacity:'...',
+      // SituationVideoServer_count: '...',
+      // SituationVideoServer_capacity:'...',
+      // ConnectServer_count: '...',
+      // ConnectServer_capacity:'...',
       convergChecked: false,
     };
   },
   methods: {
+    
+    // изменение списка дополнительных серверов для гиперконвергента
     extendConvServParamList(){
       // console.log('hello, making a new member')
       // console.log(this.convServParam)
@@ -491,8 +368,6 @@ export default {
       
       // console.log(this.convServParam)
     },
-    
-
     deleteItem: function (item, index) {
       if(this.convServParam[index] === item) { 
       // The template passes index as the second parameter to avoid indexOf, 
@@ -506,7 +381,7 @@ export default {
       }
     },
 
-
+    // суммарный объём всех серверов в гиперконвергентной вкладке
     sumItUp(){
       this.sumItUpAnswer = 0
       this.convServParam.forEach( servParam => {
@@ -516,10 +391,13 @@ export default {
       return this.sumItUpAnswer
     },
     
+
+
+
     
     
     getMbrVideo() {
-      console.log("cams_Mbr", (this.mBr = localStorage.getItem("Bitrate")));
+      // console.log("cams_Mbr", (this.mBr = localStorage.getItem("Bitrate")));
       this.video = true;
       return (this.mBR = localStorage.getItem("Bitrate"));
     }, //Ф-ция, отвечающая за присвоение битрейта от видеокамер

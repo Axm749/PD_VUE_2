@@ -1,9 +1,9 @@
 <template>
-     <div>
-    <v-container fluid>
+    <div class="module_bg">
+    <v-card class="pa-5">
         <h1>Электропитание</h1>
 
-        <br>
+        
         <v-text-field
             type="number"
             outlined
@@ -13,8 +13,9 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="voultage"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
+        
         <v-text-field
             type="number"
             outlined
@@ -24,8 +25,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="capacity"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             outlined
@@ -35,8 +36,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="batteries"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             outlined
@@ -46,8 +47,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="kpd"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             :disabled="self === false "
@@ -57,24 +58,28 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="power"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-checkbox 
-        info
-        hide-details
-        label="Ввести вручную?" 
-        v-model="self"
-        >
-        </v-checkbox>
-        <br>
-        <v-btn @click="start" color="primary">Старт</v-btn>
-    </v-container>
-    <v-container fluid>
-        <h2>Вывод для раздела электропитания</h2>
-        <div v-show="started">
-            <p>Время работы устройства: {{ result }} ч</p>
-        </div>
-   </v-container>
+            info
+            hide-details
+            label="Ввести вручную?" 
+            v-model="self"
+            class="mt-5"
+        />
+        <v-btn 
+            @click="start" 
+            color="primary"
+            class="mt-5"
+        >Старт</v-btn>
+    </v-card>
+    <v-card 
+        class="pa-5 mt-5"
+        v-show="started"
+    >
+        <h2>Время работы устройства:</h2>
+        <p>{{ result }}, ч</p>
+   </v-card>
   </div>
 </template>
 
