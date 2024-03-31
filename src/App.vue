@@ -62,7 +62,7 @@
     </div>
     
     <v-card
-      :class="margins === true ? 'ma-0 mt-5 pa-5' : 'ma-5 mt-5 pa-5'"
+      :class="margins === true ? 'ma-0 mt-12 pa-5' : 'ma-5 mt-12 pa-5'"
     >
       <h2> 
         <v-icon>mdi-cog</v-icon>

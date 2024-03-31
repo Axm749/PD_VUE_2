@@ -551,23 +551,24 @@ export default {
         if (this.converg){
           // гиперконвергентные системы
           this.usli = Math.ceil(this.volume3 / 7 / 4);
-          localStorage.setItem("usli", null);
-          localStorage.setItem("usli", this.usli + 2);
-          this.$emit("Usli", this.usli);
         } else {
           // обычные системы
-          this.usli = Math.ceil(this.volume3 / 15 / 8);
-          localStorage.setItem("usli", null);
-          localStorage.setItem("usli", this.usli + 2);
-          this.$emit("Usli", this.usli);
+          this.usli = Math.ceil(this.volume1 / 15 / 8);
         }
       } else{
         // свои узлы
-        // здесь не важно, какой тип системы, ведь оно учитывалось в объёме
-        this.usli = Math.ceil(this.volume3 / this.discs / this.capacity);
+        if (this.converg){ 
+          // гиперконвергентные системы
+          this.usli = Math.ceil(this.volume3 / this.discs / this.capacity);
+        } else {
+          // здесь не важно, какой тип системы, ведь оно учитывалось в объёме
+          this.usli = Math.ceil(this.volume1 / this.discs / this.capacity);
+        }
+
         localStorage.setItem("usli", null);
         localStorage.setItem("usli", this.usli + 2);
         this.$emit("Usli", this.usli);
+        
       }
       
       
