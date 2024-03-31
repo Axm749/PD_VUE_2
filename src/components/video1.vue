@@ -7,42 +7,42 @@
                 
             <h1>Видео (битрейт и PPM)</h1>
             
-                <v-text-field
-                    flat
-                    type="number"
-                    required
-                    outlined
-                    clearable
-                    label="Число зон PPM"
-                    :rules="rule"
-                    hide-details="auto"
-                    v-model.number="PPM_zones"
-                    class="mt-5"
-                />
-                <v-text-field
-                    flat
-                    type="number"
-                    required
-                    outlined
-                    clearable
-                    label="Высота установки камеры (м)"
-                    :rules="rule"
-                    hide-details="auto"
-                    v-model.number="Cam_height"
-                    class="mt-5"
-                />
-                <v-text-field
-                    flat
-                    type="number"
-                    required
-                    outlined
-                    clearable
-                    label="Угол наклона камеры (градусы)"
-                    :rules="rule"
-                    hide-details="auto"
-                    v-model.number="cam_angle"
-                    class="mt-5"
-                />
+            <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Число зон PPM"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="PPM_zones"
+                class="mt-5"
+            />
+            <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Высота установки камеры (м)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="Cam_height"
+                class="mt-5"
+            />
+            <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Угол наклона камеры (градусы)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="cam_angle"
+                class="mt-5"
+            />
             <v-text-field
                 flat
                 type="number"
@@ -53,8 +53,8 @@
                 :rules="rule"
                 hide-details="auto"
                 v-model.number="Vertical_cam_angle"
-            ></v-text-field>
-            <br>
+                class="mt-5"
+            />
                 <v-text-field
                 flat
                 type="number"
@@ -65,8 +65,8 @@
                 :rules="rule"
                 hide-details="auto"
                 v-model.number="Horizontal_cam_angle"
-            ></v-text-field>
-            <br>
+                class="mt-5"
+            />
                 <v-text-field
                 flat
                 type="number"
@@ -77,8 +77,8 @@
                 :rules="rule"
                 hide-details="auto"
                 v-model.number="Camera_reach"
-            ></v-text-field>
-            <br>
+                class="mt-5"
+            />
             <v-text-field
                 flat
                 type="number"
