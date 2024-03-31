@@ -15,7 +15,7 @@ export default new Vuetify({
             secondary: colors.lightGreen.lighten2, // #FFCDD2
             accent: colors.green.accent1, // #3F51B5
             error: colors.red.darken2,
-            success: colors.green.accent2,
+            success: colors.lightGreen.lighten2,
 
           },
           dark:{

@@ -78,7 +78,11 @@
         v-show="started"
     >
         <h2>Время работы устройства:</h2>
-        <p>{{ result }}, ч</p>
+        <p><strong>{{ result }}, ч</strong></p>
+        <v-btn
+          @click="started=false"
+          class="mt-2"
+        >скрыть</v-btn>
    </v-card>
   </div>
 </template>
@@ -104,12 +108,20 @@
                 
                 this.started = true
                 if(this.self){ //Расчёт при ручном вводе
-                    this.result =this.voultage*this.capacity*this.batteries*this.kpd*0.85/this.power
+                    this.result =0.1 * Math.ceil(
+                        10*this.voultage*this.capacity
+                        *this.batteries*this.kpd
+                        *0.85/this.power)
+
                     console.log("Время работы устройства:   ", this.result, " ч");
                 }else{         //Расчёт при автоматическом вводе
                     this.power = ''
                     this.power = localStorage.getItem('wats')
-                    this.result =this.voultage*this.capacity*this.batteries*this.kpd*0.85/this.power
+                    this.result = 0.1 * Math.ceil(
+                        10*this.voultage*this.capacity
+                        *this.batteries*this.kpd
+                        *0.85/this.power
+                        )
                     console.log("Время работы устройства:   ", this.result, " ч"); 
                 }
             },              //Ф-ция старт

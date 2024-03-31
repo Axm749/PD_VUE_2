@@ -85,7 +85,7 @@
               class="mt-5 inCardTab"
             >
               
-              <br>
+              
               <v-text-field
                 v-model="server.title"
                 required
@@ -96,7 +96,7 @@
                 placeholder="hello"
                 :rules="rule"
                 hide-details="auto"
-                class="mt-5"
+                class="mt-2"
               />
               
               <v-text-field
@@ -127,7 +127,7 @@
               <v-btn
                 color="error"
                 @click="deleteItem(server, index)"
-                class="mt-5"
+                class="mt-5 ml-2 mb-2"
               >  <v-icon>mdi-trash-can</v-icon>  удалить </v-btn>
 
             </div>
@@ -135,14 +135,14 @@
             <v-btn
               color="primary"
               @click="extendConvServParamList"
-              class="mt-5  mr-5"
+              class="ma-5"
             >добавить</v-btn>
 
-            <v-btn
+            <!-- <v-btn
               color="success"
               @click="sumItUp"
               class="mt-5"
-            >суммарный объём</v-btn>
+            >суммарный объём</v-btn> -->
             
             
             
@@ -275,12 +275,12 @@
         <p>Узлов с резервированием <strong>{{ usli + 2 }} шт.</strong></p>
 
         <v-btn
-
-          class="mt-5"
-        >сохранить</v-btn>
+          disabled
+          class="mt-2"
+        >сохранить (WIP)</v-btn>
         <v-btn
           @click="started=false"
-          class="mt-5 ml-5"
+          class="mt-2 ml-5"
         >скрыть</v-btn>
       <!-- </div> -->
     </v-card>
@@ -307,7 +307,7 @@ export default {
         {id: 2, title: `сервер сопряжения`, count: 3, volume: 600},
         {id: 3, title: `сервер ситуационного видеонаблюдения`, count: 1, volume: 300},
         {id: 4, title: `сервер другой`, count: 3, volume: 7680}
-      ],
+      ], 
       // список дополнительных серверов вносящих свои требования к объёму схд
       sumItUpAnswer: 0, //объём всех серверов вместе взятых, ГБ
 
@@ -338,16 +338,7 @@ export default {
         { name: "Система видеонаблюдения", value: "video" },
         { name: "Ручной режим", value: "user" },
       ], //Выбор режимов
-      // ManageServer_count: '...',
-      // ManageServer_capacity:'...',
-      // ArchManageServer_count: '...',
-      // ArchManageServer_capacity:'...',
-      // ArchVideoServer_count: '...',
-      // ArchVideoServer_capacity:'...',
-      // SituationVideoServer_count: '...',
-      // SituationVideoServer_capacity:'...',
-      // ConnectServer_count: '...',
-      // ConnectServer_capacity:'...',
+
       convergChecked: false,
     };
   },
@@ -381,7 +372,7 @@ export default {
       }
     },
 
-    // суммарный объём всех серверов в гиперконвергентной вкладке
+    
     sumItUp(){
       this.sumItUpAnswer = 0
       this.convServParam.forEach( servParam => {
@@ -389,7 +380,7 @@ export default {
       })
       console.log( `${this.sumItUpAnswer} ГБ      ${this.sumItUpAnswer/1024} ТБ`)
       return this.sumItUpAnswer
-    },
+    }, // суммарный объём всех серверов в гиперконвергентной вкладке
     
 
 
@@ -423,7 +414,7 @@ export default {
     start() {
       this.started = true;
       this.getMbr();
-      console.log(this.mBR1);
+      // console.log(this.mBR1);
       this.Volume();
       if(this.converg)
         this.Converg();
@@ -436,14 +427,14 @@ export default {
       if (this.converg) {
         //Мощность при гиперконвергентной системе
         this.wats = (this.usli + 2) * 1000;
-        console.log(this.wats);
+        // console.log(this.wats);
         localStorage.setItem("wats", null);
         localStorage.setItem("wats", this.wats);
         this.$emit("Power", this.wats);
       } else {
         //Мощность при негиперконвергентной системе
         this.wats = (this.usli + 2) * 700;
-        console.log(this.wats);
+        // console.log(this.wats);
         localStorage.setItem("wats", null);
         localStorage.setItem("wats", this.wats);
         this.$emit("Power", this.wats);
@@ -452,13 +443,13 @@ export default {
 
     Volume() {
       this.volume = this.mBR1 * +this.users * +this.days * 3600 * 24;
-      console.log("volume", this.volume);
+      // console.log("volume", this.volume);
 
       this.volume = Math.ceil(this.volume / 8000000);
-      console.log("Рассчитанный объём в TiB:   ", this.volume);
+      // console.log("Рассчитанный объём в TiB:   ", this.volume);
 
       this.volume1 = Math.ceil(this.volume / 0.85 / 0.9095);
-      console.log("Рассчитанный объём, переведённый в Tбайт:   ", this.volume1);
+      // console.log("Рассчитанный объём, переведённый в Tбайт:   ", this.volume1);
     }, //Ф-ция, рассчитывающая объём СХД без учёта резерва
 
     Converg() {
@@ -467,23 +458,24 @@ export default {
         if(this.convergChecked){
 
         server_volume = this.sumItUp()/1024
-        console.log('объём сервера (ТБ)', server_volume)
+        // console.log('объём сервера (ТБ)', server_volume)
         
         disc_group = Math.ceil(server_volume*2 / 0.85);
         this.volume2 = Math.ceil(disc_group+2*this.volume1)
-        console.log('Объём с резервным копированием', this.volume2)
+        // console.log('Объём с резервным копированием', this.volume2)
 
         this.volume3= Math.ceil(2*this.volume1 + disc_group)/0.8
-        console.log(
-          "С учетом резерва требуемая от СХД полезная ёмкость",
-          this.volume3,
-          " Тбайт"
-        )}
+        // console.log(
+        //   "С учетом резерва требуемая от СХД полезная ёмкость",
+        //   this.volume3,
+        //   " Тбайт"
+        // )
+        }
         else{
             this.volume2= Math.ceil(this.volume1*2)
-            console.log('Объём с резервным копированием   ', this.volume2)
+            // console.log('Объём с резервным копированием   ', this.volume2)
             this.volume3 = Math.ceil(this.volume2/0.7)
-            console.log('учетом резерва требуемая от СХД полезная ёмкость', this.volume3)
+            // console.log('учетом резерва требуемая от СХД полезная ёмкость', this.volume3)
         }
     }, //Ф-ция, учитывающая объём СХД с резервом (при гиперконвергентной системе)
 
@@ -515,36 +507,36 @@ export default {
       if (!this.standart && !this.converg) {
         //Стандартный узел и негиперконвергентная система
         this.usli = Math.ceil(this.volume1 / 15 / 8);
-        console.log("Количество узлов :   ", this.usli, " шт");
-        console.log(
-          "Количество узлов с резервированием:   ",
-          this.usli + 2,
-          " шт"
-        );
+        // console.log("Количество узлов :   ", this.usli, " шт");
+        // console.log(
+        //   "Количество узлов с резервированием:   ",
+        //   this.usli + 2,
+        //   " шт"
+        // );
         localStorage.setItem("usli", null);
         localStorage.setItem("usli", this.usli + 2);
         this.$emit("Usli", this.usli);
       } else if (!this.standart && this.converg) {
         //Стандартный узел и гиперконвергентная система
         this.usli = Math.ceil(this.volume3 / 7 / 4);
-        console.log("Количество узлов :   ", this.usli, " шт");
-        console.log(
-          "Количество узлов с резервированием:   ",
-          this.usli + 2,
-          " шт"
-        );
+        // console.log("Количество узлов :   ", this.usli, " шт");
+        // console.log(
+        //   "Количество узлов с резервированием:   ",
+        //   this.usli + 2,
+        //   " шт"
+        // );
         localStorage.setItem("usli", null);
         localStorage.setItem("usli", this.usli + 2);
         this.$emit("Usli", this.usli);
       } else {
         //Нестандартный узел и негиперконвергентная система
         this.usli = Math.ceil(this.volume1 / +this.discs / +this.capacity);
-        console.log("Количество узлов :   ", this.usli, " шт");
-        console.log(
-          "Количество узлов с резервированием:   ",
-          this.usli + 2,
-          " шт"
-        );
+        // console.log("Количество узлов :   ", this.usli, " шт");
+        // console.log(
+        //   "Количество узлов с резервированием:   ",
+        //   this.usli + 2,
+        //   " шт"
+        // );
         localStorage.setItem("usli", null);
         localStorage.setItem("usli", this.usli + 2);
         this.$emit("Usli", this.usli);
@@ -554,10 +546,3 @@ export default {
 };
 </script>
 
-<style>
-.v-text-field {
-  margin-bottom: 20px;
-  border-radius: 8px;
-  background-color: white;
-}
-</style>
