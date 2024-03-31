@@ -1,9 +1,14 @@
 <template>
   <v-app>
     <div :class="$vuetify.theme.dark==false ? 'body_light' : 'body_dark'">
+      <!-- шапка при необходимости -->
+      
+      
+      
+      
       <!-- основной вид -->
       <div 
-        v-if="!regularView"
+        v-if="!irregularView"
         :class="noMargins === true ? 'ma-0' : 'ma-5'"
       >
         <div 
@@ -26,7 +31,7 @@
         <div 
           :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
         >
-          <condition
+          <cooling
             ref="nusli"
           />
         </div>
@@ -34,18 +39,20 @@
 
       <!-- альтернативный вид -->
       <div 
-        v-if="regularView"
-        :class="noMargins === true ? 'ma-0' : 'ma-5 module_bg'"
+        v-if="irregularView"
+        :class="noMargins === true ? 'ma-0 mt-5' : 'ma-5 module_bg'"
       >
         <v-expansion-panels
           multiple
           accordion
           tile
         >
-          <v-expansion-panel>
+          <v-expansion-panel
+            eager
+          >
             <v-expansion-panel-header><h2> СХД </h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div class="module_bg">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
                 <shd
                 @Power="getpower"
                 @Usli="getUsli"
@@ -58,7 +65,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header><h2>электропитание</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div class="module_bg">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
                 <power
                   ref="npower"
                 />
@@ -69,8 +76,8 @@
           <v-expansion-panel>
             <v-expansion-panel-header><h2>охлаждение</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div class="module_bg">
-                <condition
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
+                <cooling
                   ref="nusli"
                 />
               </div>
@@ -84,11 +91,9 @@
       <div 
         :class="noMargins === true ? 'ma-0 mt-12' : 'ma-5 mt-12 module_bg'"
       >
-
-      
         <v-expansion-panels
-            
             accordion
+            tile
           >
             <v-expansion-panel>
               <v-expansion-panel-header>
@@ -106,18 +111,21 @@
                   info
                   hide-details
                   label="Использовать альтернативное отображение"
-                  v-model="regularView"
+                  v-model="irregularView"
+                  @change="saveTheme"
                 />
                 <v-checkbox
                   info
                   hide-details
                   label="Убрать отступы"
                   v-model="noMargins"
+                  @change="saveTheme"
                 />
 
                 <v-switch
                   v-model="$vuetify.theme.dark"
                   inset
+                  @change="saveTheme"
                   label="Тёмная тема"
                   persistent-hint
                 />
@@ -137,7 +145,8 @@
 
 import power from './components/power.vue';
 import shd from './components/shd.vue';
-import condition from './components/condition.vue'
+import cooling from './components/cooling.vue'
+// import condition from './components/condition.vue'
 
 
 export default {
@@ -146,12 +155,12 @@ export default {
   components: {
     shd,
     power,
-    condition,
+    cooling,
   },
 
   data: () => ({
-    regularView: false,
-    noMargins: false,
+    irregularView: true,
+    noMargins: true,
   }),
 
   methods:{
@@ -161,7 +170,34 @@ export default {
     getUsli(){
       this.$refs.nusli.getusli()
     },
-  }
+    saveTheme(){
+      localStorage.setItem('PD_VUE_DARK_THEME', this.$vuetify.theme.dark)
+      localStorage.setItem('PD_VUE_NO_PADDING', this.noMargins)
+      localStorage.setItem('PD_VUE_IRREGULAR_VIEW', this.irregularView)
+      console.log('saved theme')
+    }    
+  },
+  mounted(){
+      if(localStorage.getItem('PD_VUE_DARK_THEME')=='true'){
+        this.$vuetify.theme.dark = true
+      } else {
+        this.$vuetify.theme.dark = false
+      }
+
+      if(localStorage.getItem('PD_VUE_NO_PADDING')=='true'){
+        this.noMargins = true
+      } else {
+        this.noMargins = false
+      }
+
+      if(localStorage.getItem('PD_VUE_IRREGULAR_VIEW')=='true'){
+        this.irregularView = true
+      } else {
+        this.irregularView = false
+      }
+
+
+    }
 };
 </script>
 
@@ -208,9 +244,7 @@ body{
         background-position: 0%, 100%;
     } 
 }
-/* @keyframes bg {
-  to { transform: translate(-50%, -50%) rotate(1turn); }
-} */
+
 
 .container{
     padding: 20px;
@@ -240,7 +274,7 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 
 .inCardTab{
   background-color: rgba(0, 0, 0, 0.02);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 5px;
 }
 

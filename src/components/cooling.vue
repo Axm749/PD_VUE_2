@@ -27,8 +27,7 @@
             v-model="Usli_self"
             class="mt-5"
         />
-        
-        
+
         <v-text-field
             type="number"
             outlined
@@ -59,50 +58,51 @@
 
         <div v-if="komutat_opt">
             <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            label="Колличество коммутаторов ядра"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="count_yadr"
-            class="mt-5"
-        />
-        <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            :label="WatOpt===true ? komutat_yadrlabel1: komutat_yadrlabel2"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="komutat_yadr"
-            class="mt-5"
-        />
-        <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            label="Колличество коммутаторов доступа"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="count_dost"
-            class="mt-5"
-        />
-        <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            :label="WatOpt===true ? komutat_dostlabel1: komutat_dostlabel2"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="komutat_dost"
-            class="mt-5"
-        />
-    </div>
+                type="number"
+                outlined
+                required
+                clearable
+                label="Колличество коммутаторов ядра"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="count_yadr"
+                class="mt-5"
+            />
+            <v-text-field
+                type="number"
+                outlined
+                required
+                clearable
+                :label="WatOpt===true ? komutat_yadrlabel1: komutat_yadrlabel2"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="komutat_yadr"
+                class="mt-5"
+            />
+            <v-text-field
+                type="number"
+                outlined
+                required
+                clearable
+                label="Колличество коммутаторов доступа"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="count_dost"
+                class="mt-5"
+            />
+            <v-text-field
+                type="number"
+                outlined
+                required
+                clearable
+                :label="WatOpt===true ? komutat_dostlabel1: komutat_dostlabel2"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="komutat_dost"
+                class="mt-5"
+            />
+        </div>
+
         <v-text-field
             type="number"
             outlined
@@ -114,6 +114,7 @@
             v-model.number="condition"
             class="mt-2"
         />
+
         <v-btn 
             @click="start" 
             color="primary"
@@ -121,6 +122,8 @@
         >Старт</v-btn>
 
     </v-card>
+
+    <!-- вывод ответа -->
     <v-card
         class="pa-5 mt-5"
         v-show="started"
@@ -132,12 +135,34 @@
           class="mt-2"
         >скрыть</v-btn>
     </v-card>
+
+    <!-- уведомление об ошибке -->
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      {{ errorText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
+
+
     </div>
 </template>
 
 <script>
     export default {
-        name: 'my-condition',
+        name: 'my-cooling',
         data:() =>({
             started: false,         // вывод результатов расчета (показывать или нет)
 
@@ -147,11 +172,12 @@
             Usli_self: false,       // дать ли пользователю вводить число узлов СХД
             Usli_shd: '...',        // число узлов СХД
 
-            
-            
-            
 
-            // useWats: false,
+            snackbar: false,      // окошко об ошибке
+            timeout: 2500,
+            errorText: 'Неверно введены данные или они отсутствуют',
+
+
             K_sred: '...',          // Усреднённое тепловыделение в процентах (0-100)
 
             WatOpt: true,           // использование ваттов как единиц измерения
