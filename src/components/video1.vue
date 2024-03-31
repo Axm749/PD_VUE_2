@@ -213,105 +213,105 @@
 
 <script>
 
-    export default {
-        name: 'video_vue',
-        data:() =>({
-            PPM_zones: 2, //Зоны PPM
-            Cam_height:3, //Высота установки камеры
-            cam_angle:60, //Угол наклона камеры
-            Vertical_cam_angle:50,  //Вертикальный угол обзора камеры
-            Horizontal_cam_angle:80,//Горизонтальный угол обзора камеры
-            Camera_reach:25,        //Дальность обзора камеры
-            Resolution_X:1920,      //Разрешение по горизонтали
-            Resolution_Y:1080,      //Разрешение по вертикали
-            plot:'...',             //Плотность изображения
-            square:'...',           //Покрываемая площадь
-            kodak:0.15,             //Параметр кодака
-            self:false,             //Параметр, отвечающий за ручной ввод для кодака
-            started:false,          //Параметр, отвечающий за вывод результатов работы программы при нажатии "Старт"
-            analog:false,           //Параметр, отвечающий за вывод результатов работы программы при аналоговом расчёте
-            rule: [
+export default {
+    name: 'video_vue',
+    data:() =>({
+        PPM_zones: 2, //Зоны PPM
+        Cam_height:3, //Высота установки камеры
+        cam_angle:60, //Угол наклона камеры
+        Vertical_cam_angle:50,  //Вертикальный угол обзора камеры
+        Horizontal_cam_angle:80,//Горизонтальный угол обзора камеры
+        Camera_reach:25,        //Дальность обзора камеры
+        Resolution_X:1920,      //Разрешение по горизонтали
+        Resolution_Y:1080,      //Разрешение по вертикали
+        plot:'...',             //Плотность изображения
+        square:'...',           //Покрываемая площадь
+        kodak:0.15,             //Параметр кодака
+        self:false,             //Параметр, отвечающий за ручной ввод для кодака
+        started:false,          //Параметр, отвечающий за вывод результатов работы программы при нажатии "Старт"
+        analog:false,           //Параметр, отвечающий за вывод результатов работы программы при аналоговом расчёте
+        rule: [
             value => !!value || 'Необходимо заполнить это поле.',
-    ],                              //Правила для текстовых полей
-            Angle_Height_LowFieldOfView:0,  //Угол, необходимый для рассчёта длины слепой зоны камеры
-            L_blind:0,                      //Длина слепой зоны камеры
-            dx:0,                           //
-            d:0,
-            S:[1],
-            f:0,
-            Total:0,
-            Total_Resolution:0,
-            i:1,
-            bottom:0,
-            top:0,
-            PPM:[1],
-            Outer_angle:0,
-            Real_L_max:0,
-            accept:false,
-            mBr:0,
-            final_mBR:0,
-            L_big:0,
-            Temp_f_big:0,
-            L_small:0,
-            Temp_f_small:0,
-            HIPOTENUSE:0,
-            HIPOTENUSE1:0,
-            result:[1],
-            pixelscount:0,
-        }),
+        ],                              //Правила для текстовых полей
+        Angle_Height_LowFieldOfView:0,  //Угол, необходимый для рассчёта длины слепой зоны камеры
+        L_blind:0,                      //Длина слепой зоны камеры
+        dx:0,                           //
+        d:0,
+        S:[1],
+        f:0,
+        Total:0,
+        Total_Resolution:0,
+        i:1,
+        bottom:0,
+        top:0,
+        PPM:[1],
+        Outer_angle:0,
+        Real_L_max:0,
+        accept:false,
+        mBr:0,
+        final_mBR:0,
+        L_big:0,
+        Temp_f_big:0,
+        L_small:0,
+        Temp_f_small:0,
+        HIPOTENUSE:0,
+        HIPOTENUSE1:0,
+        result:[1],
+        pixelscount:0,
+    }),
 
-        methods:{
-            start(){
-                this.Total = 0
-                this.result[this.i]=0
-                this.mBr = 0
-                this.final_mBR = 0
-                this.d=0
+    methods:{
+        start(){
+            this.Total = 0
+            this.result[this.i]=0
+            this.mBr = 0
+            this.final_mBR = 0
+            this.d=0
+            
+            this.started = true
+
+            let FPS = 30;
+            this.check_len()
+            this.Angle_Height_LowFieldOfView = +this.cam_angle-(+this.Vertical_cam_angle/2)
+            console.log(this.Angle_Height_LowFieldOfView)
+
+            this.L_blind = (+this.Cam_height*Math.tan(this.Angle_Height_LowFieldOfView*Math.PI/180)).toFixed(5)
+            console.log(this.L_blind)
+            if((+this.Camera_reach - this.L_blind) <=0){
+                alert ('Ошибка!')
+            }if (this.L_blind <0){
+                alert('Ошибка!')
+            }
+            this.get_dx()
+            this.Total_Resolution = +this.Resolution_X*+this.Resolution_Y
+            for (this.i = 1; this.i < +this.PPM_zones+1; this.i++){
+                console.log(`____________________current cycle №${this.i}____________________`);
+                console.log(`____________________f_param____________________`);
+                this.get_f();
+                console.log(`____________________d_param____________________`);
+                this.get_d();
+                console.log(`____________________Bottom____________________`);
+                this.get_Wigth1();
+                //bottom
+                console.log(`____________________Top____________________`);
+                this.get_Wigth2();
+                //top
+                console.log(`____________________S_param____________________`);
+                this.trap();
+                console.log(`____________________Total_PPM____________________`);
+                this.PPM_from_S()
+
                 
-                this.started = true
-
-                let FPS = 30;
-                this.check_len()
-                this.Angle_Height_LowFieldOfView = +this.cam_angle-(+this.Vertical_cam_angle/2)
-                console.log(this.Angle_Height_LowFieldOfView)
-
-                this.L_blind = (+this.Cam_height*Math.tan(this.Angle_Height_LowFieldOfView*Math.PI/180)).toFixed(5)
-                console.log(this.L_blind)
-                if((+this.Camera_reach - this.L_blind) <=0){
-                    alert ('Ошибка!')
-                }if (this.L_blind <0){
-                    alert('Ошибка!')
-                }
-                this.get_dx()
-                this.Total_Resolution = +this.Resolution_X*+this.Resolution_Y
-                for (this.i = 1; this.i < +this.PPM_zones+1; this.i++){
-        console.log(`____________________current cycle №${this.i}____________________`);
-        console.log(`____________________f_param____________________`);
-        this.get_f();
-        console.log(`____________________d_param____________________`);
-        this.get_d();
-        console.log(`____________________Bottom____________________`);
-        this.get_Wigth1();
-        //bottom
-        console.log(`____________________Top____________________`);
-        this.get_Wigth2();
-        //top
-        console.log(`____________________S_param____________________`);
-        this.trap();
-        console.log(`____________________Total_PPM____________________`);
-        this.PPM_from_S()
-
-        
-        
-        this.Total += (+this.Total_Resolution * +this.d)
-        console.log('total',this.Total)
-        this.result[this.i]= +this.Total_Resolution * +this.d
-        this.mBr = (+this.Total * FPS * +this.kodak).toFixed(5)
-        console.log(`Our bit rate: ${(this.mBr/(1024*1024)).toFixed(5)}`);
-        this.final_mBR = (+this.mBr/(1024*1024)).toFixed(2)
-        localStorage.setItem('Bitrate', this.final_mBR)
-        this.$emit('cam_bitrate', this.final_mBR)
-    }
+                
+                this.Total += (+this.Total_Resolution * +this.d)
+                console.log('total',this.Total)
+                this.result[this.i]= +this.Total_Resolution * +this.d
+                this.mBr = (+this.Total * FPS * +this.kodak).toFixed(5)
+                console.log(`Our bit rate: ${(this.mBr/(1024*1024)).toFixed(5)}`);
+                this.final_mBR = (+this.mBr/(1024*1024)).toFixed(2)
+                localStorage.setItem('Bitrate', this.final_mBR)
+                this.$emit('cam_bitrate', this.final_mBR)
+            }
         },
 
         degtoRad(degrees) {
