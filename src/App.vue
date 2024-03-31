@@ -1,86 +1,98 @@
 <template>
-  <v-app
-  
-  >
-    <div 
-      v-if="!regularView"
-      :class="margins === true ? 'ma-0' : 'ma-5'"
-    >
-      <shd
-      @Power="getpower"
-      @Usli="getUsli"
-      />
-
-      <power
-      ref="npower"
-      />
-      
-      <condition
-      ref="nusli"
-      />
-    </div>
-
-    <div 
-      v-if="regularView"
-      :class="margins === true ? 'ma-0' : 'ma-5'"
-    >
-      <v-expansion-panels
-        class="mt-6"
-        multiple
-        accordion
+  <v-app>
+    <div :class="$vuetify.theme.dark==false ? 'body_light' : 'body_dark'">
+      <div 
+        v-if="!regularView"
+        :class="margins === true ? 'ma-0' : 'ma-5'"
       >
-        <v-expansion-panel>
-          <v-expansion-panel-header>СХД</v-expansion-panel-header>
-          <v-expansion-panel-content
-          >
-            <shd
-              @Power="getpower"
-              @Usli="getUsli"
-            />
-          </v-expansion-panel-content>
-        </v-expansion-panel>
+        <shd
+        @Power="getpower"
+        @Usli="getUsli"
+        />
 
-        <v-expansion-panel>
-          <v-expansion-panel-header>электропитание</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <power
-            ref="npower"
-            />
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-
-        <v-expansion-panel>
-          <v-expansion-panel-header>охлаждение</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <condition
-            ref="nusli"
-            />
-          </v-expansion-panel-content>
-        </v-expansion-panel>
+        <power
+        ref="npower"
+        />
         
-      </v-expansion-panels>
+        <condition
+        ref="nusli"
+        />
+      </div>
+
+      <div 
+        v-if="regularView"
+        :class="margins === true ? 'ma-0' : 'ma-5'"
+      >
+        <v-expansion-panels
+          class="mt-6"
+          multiple
+          accordion
+          tile
+        >
+          <v-expansion-panel>
+            <v-expansion-panel-header>СХД</v-expansion-panel-header>
+            <v-expansion-panel-content
+            >
+              <shd
+                @Power="getpower"
+                @Usli="getUsli"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <v-expansion-panel>
+            <v-expansion-panel-header>электропитание</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <power
+              ref="npower"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <v-expansion-panel>
+            <v-expansion-panel-header>охлаждение</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <condition
+              ref="nusli"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          
+        </v-expansion-panels>
+      </div>
+      
+      <v-card
+        :class="margins === true ? 'ma-0 mt-12 pa-5' : 'ma-5 mt-12 pa-5'"
+      >
+        <h2> 
+          <v-icon>mdi-cog</v-icon>
+          Дополнительно
+        </h2>
+        <v-checkbox
+          info
+          hide-details
+          label="Использовать альтернативное отображение"
+          v-model="regularView"
+        />
+        <v-checkbox
+          info
+          hide-details
+          label="Убрать отступы"
+          v-model="margins"
+        />
+
+        <v-switch
+          v-model="$vuetify.theme.dark"
+          inset
+          label="Тёмная тема"
+          persistent-hint
+        />
+      </v-card>
+
+
+
     </div>
     
-    <v-card
-      :class="margins === true ? 'ma-0 mt-12 pa-5' : 'ma-5 mt-12 pa-5'"
-    >
-      <h2> 
-        <v-icon>mdi-cog</v-icon>
-        Дополнительно
-      </h2>
-      <v-checkbox
-        info
-        hide-details
-        label="использовать альтернативное отображение"
-        v-model="regularView"
-      />
-      <v-checkbox
-        info
-        hide-details
-        label="убрать отступы"
-        v-model="margins"
-      />
-    </v-card>
     
 
     
@@ -130,9 +142,22 @@ body{
     background-size: 200% 200%;
     /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
     /* background-image: linear-gradient( 120deg, #1288ab, #e542f4); */
-    background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
+    /* background-image: linear-gradient( 120deg, #33691E, #4DD0E1); */
+    /* background-image: linear-gradient( 120deg, var(--v-accent-lighten1), var(--v-accent-lighten2)); */
     animation: bg 5s ease infinite;
 }
+
+.body_light{
+  background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
+  height: 100%;
+}
+
+.body_dark{
+  background-image: linear-gradient( 120deg, #691e1e, #986e32);
+  height: 100%;
+}
+
+
 @keyframes bg {
     0%{
         background-position: 0%, 100%;

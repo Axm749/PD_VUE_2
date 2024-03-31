@@ -70,39 +70,41 @@
             </v-btn>
           </template>
 
-        
-          <v-card
-            class="pa-5 mt-5"
-          >
+          <div class="module_bg">
+            <v-card
+              class="pa-5"
+            >
 
-          <h1>параметры дисковых хранилищ узлов</h1>
+            <h1>параметры дисковых хранилищ узлов</h1>
 
-            <v-text-field
-              flat
-              type="number"
-              required
-              outlined
-              clearable
-              label="Объём диска (Тбайт)"
-              :rules="rule"
-              hide-details="auto"
-              v-model.number="capacity"
-              class="mt-5"
-            />
-            
-            <v-text-field
-              flat
-              type="number"
-              required
-              outlined
-              clearable
-              label="Количество дисков"
-              :rules="rule"
-              hide-details="auto"
-              v-model.number="discs"
-              class="mt-5"
-            />
-          </v-card>
+              <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Объём диска (Тбайт)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="capacity"
+                class="mt-5"
+              />
+              
+              <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Количество дисков"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="discs"
+                class="mt-5"
+              />
+            </v-card>
+          </div>
+          
         <!-- <div v-show="standart"> -->
           
         <!-- </div> -->
@@ -116,7 +118,6 @@
           v-model="dialog1"
           transition="dialog-bottom-transition"
           width="80%"
-          
           aria-hidden="true"
         >
           <template v-slot:activator="{ props1 }">
@@ -133,84 +134,82 @@
 
           
           <!-- сами параметры через v-for -->
-          <v-card
-            outlined
-            class="pa-5 mt-5"
-          >
-            
-            <h1>Дополнительные сервера</h1>
-            
-
-            <div 
-              v-for="(server, index) in convServParam"
-              :key="index"
-              class="mt-5 inCardTab"
+          <div class="module_bg">
+            <v-card
+              outlined
+              class="pa-5"
             >
               
+              <h1>Дополнительные сервера</h1>
               
-              <v-text-field
-                v-model="server.title"
-                required
-                outlined
-                clearable
-                label="название"
-                prepend-icon="mdi-table-column"
-                placeholder="hello"
-                :rules="rule"
-                hide-details="auto"
-                class="mt-2"
-              />
-              
-              <v-text-field
-                v-model="server.count"
-                type="number"
-                required
-                outlined
-                clearable
-                prepend-icon="mdi-counter"
-                label="количество (шт)"
-                :rules="rule"
-                hide-details="auto"
-                class="mt-5"
-              />
-              
-              <v-text-field
-                v-model="server.volume"
-                type="number"
-                required
-                outlined
-                clearable
-                prepend-icon="mdi-disc-player"
-                label="объём (ГБ)"
-                :rules="rule"
-                hide-details="auto"
-                class="mt-5"
-              />
+
+              <div 
+                v-for="(server, index) in convServParam"
+                :key="index"
+                class="mt-5 inCardTab"
+              >
+                
+                
+                <v-text-field
+                  v-model="server.title"
+                  required
+                  outlined
+                  clearable
+                  label="название"
+                  prepend-icon="mdi-table-column"
+                  placeholder="hello"
+                  :rules="rule"
+                  hide-details="auto"
+                  class="mt-2"
+                />
+                
+                <v-text-field
+                  v-model="server.count"
+                  type="number"
+                  required
+                  outlined
+                  clearable
+                  prepend-icon="mdi-counter"
+                  label="количество (шт)"
+                  :rules="rule"
+                  hide-details="auto"
+                  class="mt-5"
+                />
+                
+                <v-text-field
+                  v-model="server.volume"
+                  type="number"
+                  required
+                  outlined
+                  clearable
+                  prepend-icon="mdi-disc-player"
+                  label="объём (ГБ)"
+                  :rules="rule"
+                  hide-details="auto"
+                  class="mt-5"
+                />
+                <v-btn
+                  color="error"
+                  @click="deleteItem(server, index)"
+                  class="mt-5 ml-2 mb-2"
+                >  <v-icon>mdi-trash-can</v-icon>  удалить </v-btn>
+
+              </div>
+
               <v-btn
-                color="error"
-                @click="deleteItem(server, index)"
-                class="mt-5 ml-2 mb-2"
-              >  <v-icon>mdi-trash-can</v-icon>  удалить </v-btn>
+                color="primary"
+                @click="extendConvServParamList"
+                class="ma-5"
+              >добавить</v-btn>
 
-            </div>
-
-            <v-btn
-              color="primary"
-              @click="extendConvServParamList"
-              class="ma-5"
-            >добавить</v-btn>
-
-            <!-- <v-btn
-              color="success"
-              @click="sumItUp"
-              class="mt-5"
-            >суммарный объём</v-btn> -->
-            
-            
-            
-
-
-          </v-card>
+              <!-- <v-btn
+                color="success"
+                @click="sumItUp"
+                class="mt-5"
+              >суммарный объём</v-btn> -->
+          
+            </v-card>
+          </div>
         </v-dialog>
       </template>
 
@@ -256,7 +255,6 @@
           v-model="dialog"
           novalidate
           width="auto"
-          :scrollable="false"
           aria-hidden="true"
           class="mt-5"
         >

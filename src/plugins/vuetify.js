@@ -19,7 +19,11 @@ export default new Vuetify({
 
           },
           dark:{
-
+            primary: colors.red.lighten1, // #E53935
+            secondary: colors.red.lighten2, // #FFCDD2
+            accent: colors.red.accent1, // #3F51B5
+            error: colors.grey.darken2,
+            success: colors.red.lighten2,
           }
         },
       },

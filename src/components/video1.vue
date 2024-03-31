@@ -1,176 +1,204 @@
 <template>
     <div>
-        <v-container fluid>
+        <div class="module_bg">
+            <v-card
+                class="pa-5"
+            >
+                
+            <h1>Видео (битрейт и PPM)</h1>
             
-        <h1>Видео (битрейт и PPM)</h1>
-        <br>
+                <v-text-field
+                    flat
+                    type="number"
+                    required
+                    outlined
+                    clearable
+                    label="Число зон PPM"
+                    :rules="rule"
+                    hide-details="auto"
+                    v-model.number="PPM_zones"
+                    class="mt-5"
+                />
+                <v-text-field
+                    flat
+                    type="number"
+                    required
+                    outlined
+                    clearable
+                    label="Высота установки камеры (м)"
+                    :rules="rule"
+                    hide-details="auto"
+                    v-model.number="Cam_height"
+                    class="mt-5"
+                />
+                <v-text-field
+                    flat
+                    type="number"
+                    required
+                    outlined
+                    clearable
+                    label="Угол наклона камеры (градусы)"
+                    :rules="rule"
+                    hide-details="auto"
+                    v-model.number="cam_angle"
+                    class="mt-5"
+                />
             <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Число зон PPM"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="PPM_zones"
-        ></v-text-field>
-        <br>
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Вертикальный угол обзора объектива (градусы)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="Vertical_cam_angle"
+            ></v-text-field>
+            <br>
+                <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Горизонтальный угол обзора объектива (градусы)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="Horizontal_cam_angle"
+            ></v-text-field>
+            <br>
+                <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Дальность обзора (м)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="Camera_reach"
+            ></v-text-field>
+            <br>
             <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Высота установки камеры (м)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="Cam_height"
-        ></v-text-field>
-        <br>
-            <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Угол наклона камеры (градусы)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="cam_angle"
-        ></v-text-field>
-        <br>
-        <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Вертикальный угол обзора объектива (градусы)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="Vertical_cam_angle"
-        ></v-text-field>
-        <br>
-            <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Горизонтальный угол обзора объектива (градусы)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="Horizontal_cam_angle"
-        ></v-text-field>
-        <br>
-            <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Дальность обзора (м)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="Camera_reach"
-        ></v-text-field>
-        <br>
-        <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Разрешение по горизонтали (пикселей)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="Resolution_X"
-        ></v-text-field>
-        <br>
-            <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Разрешение по вертикали (пикселей)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="Resolution_Y"
-        ></v-text-field>
-        <br>
-            <v-text-field
-            type="number"
-            :disabled="self === false "
-            outlined
-            clearable
-            label="Средняя доля сжатия с кодаком (0,0 - 1,0)"
-            :rules="rule"
-            hide-details="auto"
-            v-model="kodak"
-        ></v-text-field>
-        <v-checkbox 
-        info
-        hide-details
-        label="Ввести вручную?"
-        v-model="self"
-        >
-        </v-checkbox>
-        <br>
-        <v-btn @click="start" color="primary">Старт</v-btn>
-    </v-container>
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Разрешение по горизонтали (пикселей)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="Resolution_X"
+                class="mt-5"
+            />
+                <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Разрешение по вертикали (пикселей)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="Resolution_Y"
+                class="mt-5"
+            />
+                <v-text-field
+                type="number"
+                :disabled="self === false "
+                outlined
+                clearable
+                label="Средняя доля сжатия с кодаком (0,0 - 1,0)"
+                :rules="rule"
+                hide-details="auto"
+                v-model="kodak"
+                class="mt-5"
+            />
 
-        <v-container fluid>
-            <h2>Вывод для раздела видео</h2>
-            <div v-if="started">
+            <v-checkbox 
+            info
+            hide-details
+            label="Ввести вручную?"
+            v-model="self"
+            class="mt-5"
+            />
+            
+            <v-btn 
+                @click="start" 
+                color="primary"
+                class="mt-5"
+            >Старт</v-btn>
+        </v-card>
+
+
+            <!-- вывод результата -->
+            <v-card
+                v-if="started"
+                class="pa-5 mt-5"
+            >
+                <h2>Вывод для раздела видео</h2>
+
+                <!-- здесь перерисовать -->
                 <div v-for="i in PPM_zones" :key="i">
                     <p>PPM в зоне номер {{i}} равняется {{PPM[i]}}, а пикселей в этой зоне {{(result[i]).toFixed(0)}}</p>
                     <p>Покрываемая площадь {{ (+S[i]).toFixed(0) }} м^2</p>
                 </div>
-                <p>Полученный битрейт для камеры: {{final_mBR}} Mb/s</p>
-            </div>
-        </v-container>
 
-        <v-container fluid>
-            <h2>Обратный расчет битрейта</h2>
-            <br>
+
+                <p>Полученный битрейт для камеры: {{final_mBR}} Mb/s</p>
+                <v-btn 
+                    @click="started=false" 
+                    class="mt-5"
+                >скрыть</v-btn>
+            </v-card>
+        </div>
+
+        <div class="module_bg mt-5">
+            <v-card
+                class="pa-5"
+            >
+                <h2>Обратный расчет битрейта</h2>
+                <br>
+                <v-text-field
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Плотность изображения (пикселей/м^2)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="plot"
+                class="mt-5"
+            />
             <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Плотность изображения (пикселей/м^2)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="plot"
-        ></v-text-field>
-        <br>
-        <v-text-field
-            flat
-            type="number"
-            required
-            outlined
-            clearable
-            label="Покрываемая площадь (м^2)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="square"
-        ></v-text-field>
-        <br>
-        <v-row justify-start>
-            <v-col><v-btn @click="addZone" color="primary">Добавить зону</v-btn></v-col>
-            <v-spacer></v-spacer>
-            <v-col><v-btn @click="resetZone" color="primary">Сбросить зоны</v-btn></v-col>
-        </v-row>
-        </v-container>
-        <v-container fluid>
-            <h2>Вывод для аналогового расчета видеонаблюдения</h2>
-            <div v-show="analog">
-                <p>Битрейт при аналоговом расчете видеонаблюдения {{ (final_mBR) }} Mb/s</p>
-            </div>
-        </v-container>
+                flat
+                type="number"
+                required
+                outlined
+                clearable
+                label="Покрываемая площадь (м^2)"
+                :rules="rule"
+                hide-details="auto"
+                v-model.number="square"
+                class="mt-5"
+            />
+            <v-row justify-start>
+                <v-col><v-btn @click="addZone" color="primary" class="mt-5">Добавить зону</v-btn></v-col>
+                <v-col><v-btn @click="resetZone" color="primary" class="mt-5">Сбросить зоны</v-btn></v-col>
+            </v-row>
+            </v-card>
+
+
+            <v-card
+                class="mt-5 pa-5"
+            >
+                <h2>Вывод для аналогового расчета видеонаблюдения</h2>
+                <div v-show="analog">
+                    <p>Битрейт при аналоговом расчете видеонаблюдения {{ (final_mBR) }} Mb/s</p>
+                </div>
+            </v-card>
+        </div>
     </div>
 </template>
 
