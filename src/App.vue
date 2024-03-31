@@ -1,36 +1,37 @@
 <template>
   <v-app>
     <div :class="$vuetify.theme.dark==false ? 'body_light' : 'body_dark'">
+      <!-- основной вид -->
       <div 
         v-if="!regularView"
         :class="noMargins === true ? 'ma-0' : 'ma-5'"
       >
         <shd
-        @Power="getpower"
-        @Usli="getUsli"
+          @Power="getpower"
+          @Usli="getUsli"
         />
 
         <power
-        ref="npower"
+          ref="npower"
         />
         
         <condition
-        ref="nusli"
+          ref="nusli"
         />
       </div>
 
+      <!-- альтернативный вид -->
       <div 
         v-if="regularView"
-        :class="noMargins === true ? 'ma-0' : 'ma-5'"
+        :class="noMargins === true ? 'ma-0' : 'ma-5 module_bg'"
       >
         <v-expansion-panels
-          class="mt-6"
           multiple
           accordion
           tile
         >
           <v-expansion-panel>
-            <v-expansion-panel-header>СХД</v-expansion-panel-header>
+            <v-expansion-panel-header><h2> СХД </h2></v-expansion-panel-header>
             <v-expansion-panel-content
             >
               <shd
@@ -61,8 +62,9 @@
         </v-expansion-panels>
       </div>
       
+      <!-- настройки -->
       <div 
-        :class="noMargins === true ? 'ma-0 mt-12 module_bg' : 'ma-5 mt-12 module_bg'"
+        :class="noMargins === true ? 'ma-0 mt-12' : 'ma-5 mt-12 module_bg'"
       >
 
       
@@ -108,13 +110,8 @@
         </v-expansion-panels>
       </div>
 
-
     </div>
-    
-    
-
-    
-
+  
   </v-app>
 </template>
 
@@ -157,22 +154,27 @@ body{
     padding: 0px;
     width: 100%;
     height: 100%;
-    background-size: 200% 200%;
+    /* background-size: 200% 200%; */
     /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
     /* background-image: linear-gradient( 120deg, #1288ab, #e542f4); */
     /* background-image: linear-gradient( 120deg, #33691E, #4DD0E1); */
     /* background-image: linear-gradient( 120deg, var(--v-accent-lighten1), var(--v-accent-lighten2)); */
-    animation: bg 5s ease infinite;
+    /* animation: bg 5s ease infinite; */
 }
 
 .body_light{
-  background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
+  background-image: linear-gradient( 0deg, #2ebf91, #4286f4);
+  /* background-image: linear-gradient( 120deg, #33691E, #4DD0E1); */
   height: 100%;
+  background-size: 200% 200%;
+  animation: bg 5s ease infinite;
 }
 
 .body_dark{
-  background-image: linear-gradient( 120deg, #691e1e, #986e32);
+  background-image: linear-gradient( 120deg, #691e1e, #955e20);
   height: 100%;
+  background-size: 200% 200%;
+  animation: bg 5s ease infinite;
 }
 
 
