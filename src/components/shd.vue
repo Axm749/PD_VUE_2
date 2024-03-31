@@ -1,5 +1,6 @@
 <template>
-  <div class="module_bg">
+  <div
+  >
     
 
     <!-- ввод требований -->
@@ -307,13 +308,33 @@
 
         <v-btn
           disabled
-          class="mt-2"
+          class="mt-2  mr-5"
         >сохранить (WIP)</v-btn>
         <v-btn
           @click="started=false"
-          class="mt-2 ml-5"
+          class="mt-2"
         >скрыть</v-btn>
     </v-card>
+
+    <!-- уведомление об ошибке -->
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      {{ errorText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
   </div>
 
   
@@ -331,6 +352,11 @@ export default {
   },
   data() {
     return {
+      snackbar: false,      // окошко об ошибке
+      timeout: 2500,
+      errorText: 'Неверно введены данные или они отсутствуют',
+
+
       convServParam: [
         {id: 0, title: `сервер управления`, count: 1, volume: 300},
         {id: 1, title: `сервер архивного управления`, count: 1, volume: 300},
@@ -402,7 +428,6 @@ export default {
         this.convServParam.splice(found, 1)
       }
     },
-
     
     sumItUp(){
       this.sumItUpAnswer = 0
@@ -460,6 +485,10 @@ export default {
         this.Converg();
 
       this.Standart();
+      
+
+
+      
       this.Power();
     }, //Старт
 
@@ -564,42 +593,19 @@ export default {
         }
 
       }
+      console.log(this.usli);
+      console.log(!!this.usli);
+      if (!this.usli){
+        this.snackbar = true
+        this.started = false
+        return
+      }
       localStorage.setItem("usli", this.usli);
       localStorage.setItem("usli", this.usli + 2);
       this.$emit("Usli", this.usli);
       // console.log('emitting Usli')
       
-      // if (!this.standart && !this.converg) {
-      //   //Стандартный узел и негиперконвергентная система
-      //   this.usli = Math.ceil(this.volume1 / 15 / 8);
-      //   localStorage.setItem("usli", null);
-      //   localStorage.setItem("usli", this.usli + 2);
-      //   this.$emit("Usli", this.usli);
-      // } else if (!this.standart && this.converg) {
-      //   //Стандартный узел и гиперконвергентная система
-      //   this.usli = Math.ceil(this.volume3 / 7 / 4);
-      //   // console.log("Количество узлов :   ", this.usli, " шт");
-      //   // console.log(
-      //   //   "Количество узлов с резервированием:   ",
-      //   //   this.usli + 2,
-      //   //   " шт"
-      //   // );
-      //   localStorage.setItem("usli", null);
-      //   localStorage.setItem("usli", this.usli + 2);
-      //   this.$emit("Usli", this.usli);
-      // } else {
-      //   //Нестандартный узел и негиперконвергентная система
-      //   this.usli = Math.ceil(this.volume1 / this.discs / this.capacity);
-      //   // console.log("Количество узлов :   ", this.usli, " шт");
-      //   // console.log(
-      //   //   "Количество узлов с резервированием:   ",
-      //   //   this.usli + 2,
-      //   //   " шт"
-      //   // );
-      //   localStorage.setItem("usli", null);
-      //   localStorage.setItem("usli", this.usli + 2);
-      //   this.$emit("Usli", this.usli);
-      // }
+
     }, //Ф-ция, рассчитывающа число узлов для различных типов систем и узлов
   },
 };

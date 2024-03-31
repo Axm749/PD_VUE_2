@@ -1,5 +1,5 @@
 <template>
-    <div class="module_bg">
+    <div>
     <v-card class="pa-5">
         <h1>Электропитание</h1>
 

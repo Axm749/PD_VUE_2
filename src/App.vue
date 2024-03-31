@@ -6,18 +6,30 @@
         v-if="!regularView"
         :class="noMargins === true ? 'ma-0' : 'ma-5'"
       >
-        <shd
-          @Power="getpower"
-          @Usli="getUsli"
-        />
-
-        <power
-          ref="npower"
-        />
+        <div 
+          :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
+        >
+          <shd
+            @Power="getpower"
+            @Usli="getUsli"
+          />
+        </div>
         
-        <condition
-          ref="nusli"
-        />
+        <div 
+          :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
+        >
+          <power
+            ref="npower"
+          />
+        </div>
+        
+        <div 
+          :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
+        >
+          <condition
+            ref="nusli"
+          />
+        </div>
       </div>
 
       <!-- альтернативный вид -->
@@ -32,30 +44,36 @@
         >
           <v-expansion-panel>
             <v-expansion-panel-header><h2> СХД </h2></v-expansion-panel-header>
-            <v-expansion-panel-content
-            >
-              <shd
+            <v-expansion-panel-content>
+              <div class="module_bg">
+                <shd
                 @Power="getpower"
                 @Usli="getUsli"
               />
+              </div>
+              
             </v-expansion-panel-content>
           </v-expansion-panel>
 
           <v-expansion-panel>
-            <v-expansion-panel-header>электропитание</v-expansion-panel-header>
+            <v-expansion-panel-header><h2>электропитание</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <power
-              ref="npower"
-              />
+              <div class="module_bg">
+                <power
+                  ref="npower"
+                />
+              </div>
             </v-expansion-panel-content>
           </v-expansion-panel>
 
           <v-expansion-panel>
-            <v-expansion-panel-header>охлаждение</v-expansion-panel-header>
+            <v-expansion-panel-header><h2>охлаждение</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <condition
-              ref="nusli"
-              />
+              <div class="module_bg">
+                <condition
+                  ref="nusli"
+                />
+              </div>
             </v-expansion-panel-content>
           </v-expansion-panel>
           
@@ -215,7 +233,7 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   padding: 5px;
-  margin-bottom: 20px;
+  margin-top: 20px;
   /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.127); */
   /* margin: 5px; */
 }

@@ -324,77 +324,77 @@ export default {
         },
 
         get_dx(){
-         this.dx = (+this.Camera_reach - this.L_blind) / +this.PPM_zones
-         console.log(`dx we calculated: ${this.dx}`)
+            this.dx = (+this.Camera_reach - this.L_blind) / +this.PPM_zones
+            console.log(`dx we calculated: ${this.dx}`)
         },
         get_f(){
             console.log('asdad',this.L_blind)
             console.log(this.dx)
             this.L_big = +this.L_blind + (+this.dx * +this.i)
-        console.log(`L_big calculated: ${this.L_big}`)
-        this.Temp_f_big = Math.atan(+this.L_big / +this.Cam_height)*180/Math.PI
-        console.log(`Temp_f_big calculated: ${this.Temp_f_big}`)
-        this.L_small = (+this.L_blind + (+this.dx * (+this.i - 1)))
-        console.log(`L_small calculated: ${this.L_small}`)
-        this.Temp_f_small = Math.atan(+this.L_small / +this.Cam_height)*180/Math.PI
-        console.log(`Temp_f_small calculated: ${this.Temp_f_small}`)
+            console.log(`L_big calculated: ${this.L_big}`)
+            this.Temp_f_big = Math.atan(+this.L_big / +this.Cam_height)*180/Math.PI
+            console.log(`Temp_f_big calculated: ${this.Temp_f_big}`)
+            this.L_small = (+this.L_blind + (+this.dx * (+this.i - 1)))
+            console.log(`L_small calculated: ${this.L_small}`)
+            this.Temp_f_small = Math.atan(+this.L_small / +this.Cam_height)*180/Math.PI
+            console.log(`Temp_f_small calculated: ${this.Temp_f_small}`)
 
-    if (+this.Camera_reach < ((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)){
-        console.log(` Something ain't right. ${((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)} is bigger than ${+this.Camera_reach}`)
-    }
+            if (+this.Camera_reach < ((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)){
+                console.log(` Something ain't right. ${((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)} is bigger than ${+this.Camera_reach}`)
+            }
 
-    this.f = +this.Temp_f_big -+ this.Temp_f_small
-    console.log(`f we got from calculations: ${this.f}`)
+            this.f = +this.Temp_f_big -+ this.Temp_f_small
+            console.log(`f we got from calculations: ${this.f}`)
         },
         
         get_Wigth1(){
-    this.HIPOTENUSE = Math.sqrt(((+this.L_blind+(+this.i) * +this.dx)*(+this.L_blind+(+this.i) * +this.dx))+(+this.Cam_height*+this.Cam_height));
-    console.log(`HIPOTENUSE: ${this.HIPOTENUSE} !!!`);
-    this.bottom = (2 * +this.HIPOTENUSE * Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180)).toFixed(5)
-    console.log(`width we got: ${this.bottom}`)
+            this.HIPOTENUSE = Math.sqrt(((+this.L_blind+(+this.i) * +this.dx)*(+this.L_blind+(+this.i) * +this.dx))+(+this.Cam_height*+this.Cam_height));
+            console.log(`HIPOTENUSE: ${this.HIPOTENUSE} !!!`);
+            this.bottom = (2 * +this.HIPOTENUSE * Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180)).toFixed(5)
+            console.log(`width we got: ${this.bottom}`)
         },
         get_Wigth2(){
-    this.HIPOTENUSE1 = Math.sqrt(((+this.L_blind+(+this.i-1) * +this.dx)*(+this.L_blind+(+this.i-1) * +this.dx))+(+this.Cam_height*+this.Cam_height));
-    console.log(`HIPOTENUSE: ${this.HIPOTENUSE1} !!!`);
-    console.log('tan',Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180))
-    console.log('hor', this.Horizontal_cam_angle)
-    this.top = (2 * +this.HIPOTENUSE1 * Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180)).toFixed(5)
-    console.log(`width we got: ${this.top}`)
+            this.HIPOTENUSE1 = Math.sqrt(((+this.L_blind+(+this.i-1) * +this.dx)*(+this.L_blind+(+this.i-1) * +this.dx))+(+this.Cam_height*+this.Cam_height));
+            console.log(`HIPOTENUSE: ${this.HIPOTENUSE1} !!!`);
+            console.log('tan',Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180))
+            console.log('hor', this.Horizontal_cam_angle)
+            this.top = (2 * +this.HIPOTENUSE1 * Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180)).toFixed(5)
+            console.log(`width we got: ${this.top}`)
         },
         get_d(){
-        this.d = (this.f/this.Vertical_cam_angle).toFixed(5)
-        console.log(`the calculation of d param: ${this.d}`);
+            this.d = (this.f/this.Vertical_cam_angle).toFixed(5)
+            console.log(`the calculation of d param: ${this.d}`);
         },
         trap(){
-        console.log(this.top)
-        this.S[this.i] = (+this.top * +this.dx + ((+this.bottom - +this.top) / 2) * +this.dx).toFixed(5)
-        console.log(`S we got: ${this.S[this.i]}`)
-        
+            console.log(this.top)
+            this.S[this.i] = (+this.top * +this.dx + ((+this.bottom - +this.top) / 2) * +this.dx).toFixed(5)
+            console.log(`S we got: ${this.S[this.i]}`)
+            
         },
         PPM_from_S(){
-        this.PPM[this.i] = ((+this.Total_Resolution * +this.d) / +this.S[this.i]).toFixed(5);
-        console.log(`PPM of zone ${+this.i} is equal to: ${+this.PPM[this.i]}`);
-        console.log(`Pixels in that zone: ${+this.Total_Resolution * +this.d}`)
+            this.PPM[this.i] = ((+this.Total_Resolution * +this.d) / +this.S[this.i]).toFixed(5);
+            console.log(`PPM of zone ${+this.i} is equal to: ${+this.PPM[this.i]}`);
+            console.log(`Pixels in that zone: ${+this.Total_Resolution * +this.d}`)
         },
         check_len(){
-    this.Outer_angle = ( this.cam_angle + (this.Vertical_cam_angle/2))
-    this.Real_L_max = (this.Cam_height * Math.tan(this.Outer_angle*Math.PI/180)).toFixed(5)
-    console.log(`Результаты функции CHECK_LEN Outer: ${this.Outer_angle}, Real L_max: ${this.Real_L_max}`);
-    if (this.Outer_angle >= 90){
-        console.log(`All good.`)
-        return 0
-    } if ( this.Camera_reach >= this.Real_L_max){
-        this.accept = confirm(`при введенных параметрах, реальная максимальная дальность будет ${this.Real_L_max},
-         значит какие-то параметры введены неверно. Вы хотите продолжить с реальной максимальной дальностью?`)
-        if ( this.accept === true) {
-            console.log(`Продолжаем с тем, что есть, хорошо.`);
-            this.Camera_reach = this.Real_L_max;
-            console.log(this.Camera_reach);
-        } else {
-            alert(`Ну типо ошибка, да?`)
-        }
-    }
-    },
+            this.Outer_angle = ( this.cam_angle + (this.Vertical_cam_angle/2))
+            this.Real_L_max = (this.Cam_height * Math.tan(this.Outer_angle*Math.PI/180)).toFixed(5)
+            console.log(`Результаты функции CHECK_LEN Outer: ${this.Outer_angle}, Real L_max: ${this.Real_L_max}`);
+            if (this.Outer_angle >= 90){
+                console.log(`All good.`)
+                return 0
+            } if ( this.Camera_reach >= this.Real_L_max){
+                this.accept = confirm(`при введенных параметрах, реальная максимальная дальность будет ${this.Real_L_max},
+                значит какие-то параметры введены неверно. Вы хотите продолжить с реальной максимальной дальностью?`)
+                if ( this.accept === true) {
+                    console.log(`Продолжаем с тем, что есть, хорошо.`);
+                    this.Camera_reach = this.Real_L_max;
+                    console.log(this.Camera_reach);
+                } else {
+                    alert(`Ну типо ошибка, да?`)
+                }
+            }
+        },
 
         addZone(){
             this.started = false
