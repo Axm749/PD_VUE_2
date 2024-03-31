@@ -1,12 +1,13 @@
 <template>
-    <div>
-    <v-container fluid>
+    <div class="module_bg">
+    <v-card class="pa-5">
         <h1>Система охлаждения</h1>
-        <br>
+        
         <v-checkbox 
-        label="Расчёт в Вт?" 
-        v-model="WatOpt">
-        </v-checkbox>
+            label="Расчёт в Вт?" 
+            v-model="WatOpt"
+            class="mt-2"
+        />
         <v-text-field
             :disabled="Usli_self == false "
             type="number"
@@ -17,15 +18,17 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="Usli_shd"
-        ></v-text-field>
+            class="mt-2"
+        />
         <v-checkbox 
-        info
-        hide-details
-        label="Ввести вручную?" 
-        v-model="Usli_self"
-        >
-        </v-checkbox>
-        <br>
+            info
+            hide-details
+            label="Ввести вручную?" 
+            v-model="Usli_self"
+            class="mt-5"
+        />
+        
+        
         <v-text-field
             type="number"
             outlined
@@ -35,8 +38,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="Heat"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             outlined
@@ -46,11 +49,12 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="K_sred"
-        ></v-text-field>
+            class="mt-5"
+        />
         <v-checkbox 
-        label="Использовать коммутаторы видеонаблюдения?" 
-        v-on:change="komutat_Opt"
-        ></v-checkbox>
+            label="Использовать коммутаторы видеонаблюдения?" 
+            v-on:change="komutat_Opt"
+        />
 
         <div v-if="komutat_opt">
             <v-text-field
@@ -73,8 +77,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="komutat_yadr"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             outlined
@@ -84,8 +88,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="count_dost"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             outlined
@@ -95,8 +99,8 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="komutat_dost"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
     </div>
         <v-text-field
             type="number"
@@ -107,16 +111,25 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="condition"
-        ></v-text-field>
-        <br>
-        <v-btn @click="start" color="primary">Старт</v-btn>
-    </v-container>
-    <v-container fluid>
-        <h2>Вывод для раздела охлаждения</h2>
-        <div v-show="started">
-            <p>Необходимое число кондиционеров: {{ final_result }} шт</p>
-        </div>
-    </v-container>
+        />
+        <v-btn 
+            @click="start" 
+            color="primary"
+            class="mt-5"
+        >Старт</v-btn>
+
+    </v-card>
+    <v-card
+        class="pa-5 mt-5"
+        v-show="started"
+    >
+        <h2>Необходимое число кондиционеров: </h2>
+        <p><strong>{{ final_result }} шт.</strong></p>
+        <v-btn
+          @click="started=false"
+          class="mt-2"
+        >скрыть</v-btn>
+    </v-card>
     </div>
 </template>
 

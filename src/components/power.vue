@@ -78,7 +78,7 @@
         v-show="started"
     >
         <h2>Время работы устройства:</h2>
-        <p><strong>{{ result }}, ч</strong></p>
+        <p><strong>{{ result }}, ч.</strong></p>
         <v-btn
           @click="started=false"
           class="mt-2"

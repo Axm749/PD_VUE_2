@@ -1,54 +1,89 @@
 <template>
-  <v-app>
-    
-    <shd
-    @Power="getpower"
-    @Usli="getUsli"
-    />
-
-    <power
-    ref="npower"
-    />
-    
-    <condition
-    ref="nusli"
-    />
-
-    <v-expansion-panels
-      class="mt-6"
-      multiple
-      accordion
+  <v-app
+  
+  >
+    <div 
+      v-if="!regularView"
+      :class="margins === true ? 'ma-0' : 'ma-5'"
     >
-      <v-expansion-panel>
-        <v-expansion-panel-header>СХД</v-expansion-panel-header>
-        <v-expansion-panel-content
-        >
-          <shd
-            @Power="getpower"
-            @Usli="getUsli"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+      <shd
+      @Power="getpower"
+      @Usli="getUsli"
+      />
 
-      <v-expansion-panel>
-        <v-expansion-panel-header>электропитание</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <power
-          ref="npower"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <v-expansion-panel>
-        <v-expansion-panel-header>охлаждение</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <condition
-          ref="nusli"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+      <power
+      ref="npower"
+      />
       
-    </v-expansion-panels>
+      <condition
+      ref="nusli"
+      />
+    </div>
+
+    <div 
+      v-if="regularView"
+      :class="margins === true ? 'ma-0' : 'ma-5'"
+    >
+      <v-expansion-panels
+        class="mt-6"
+        multiple
+        accordion
+      >
+        <v-expansion-panel>
+          <v-expansion-panel-header>СХД</v-expansion-panel-header>
+          <v-expansion-panel-content
+          >
+            <shd
+              @Power="getpower"
+              @Usli="getUsli"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+
+        <v-expansion-panel>
+          <v-expansion-panel-header>электропитание</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <power
+            ref="npower"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+
+        <v-expansion-panel>
+          <v-expansion-panel-header>охлаждение</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <condition
+            ref="nusli"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        
+      </v-expansion-panels>
+    </div>
+    
+    <v-card
+      :class="margins === true ? 'ma-0 mt-5 pa-5' : 'ma-5 mt-5 pa-5'"
+    >
+      <h2> 
+        <v-icon>mdi-cog</v-icon>
+        Дополнительно
+      </h2>
+      <v-checkbox
+        info
+        hide-details
+        label="использовать альтернативное отображение"
+        v-model="regularView"
+      />
+      <v-checkbox
+        info
+        hide-details
+        label="убрать отступы"
+        v-model="margins"
+      />
+    </v-card>
+    
+
+    
 
   </v-app>
 </template>
@@ -70,7 +105,8 @@ export default {
   },
 
   data: () => ({
-    //
+    regularView: false,
+    margins: false,
   }),
 
   methods:{
@@ -88,7 +124,7 @@ export default {
 
 body{
   margin: 0;
-    padding: 20px;
+    padding: 0px;
     width: 100%;
     height: 100%;
     background-size: 200% 200%;
