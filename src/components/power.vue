@@ -73,6 +73,7 @@
             class="mt-5"
         >Старт</v-btn>
     </v-card>
+
     <v-card 
         class="pa-5 mt-5"
         v-show="started"
@@ -84,6 +85,8 @@
           class="mt-2"
         >скрыть</v-btn>
    </v-card>
+
+   
   </div>
 </template>
 
@@ -128,6 +131,9 @@
             getPower(){
                 return this.power = localStorage.getItem('wats')
             }               //Ф-ция, отвечающая за приём параметра мощности из раздела СХД
+        },
+        mounted(){
+            this.getPower()
         }
     }
 </script>

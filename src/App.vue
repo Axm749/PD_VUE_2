@@ -62,7 +62,7 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
 
-          <v-expansion-panel>
+          <v-expansion-panel eager>
             <v-expansion-panel-header><h2>электропитание</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
               <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
@@ -73,7 +73,7 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
 
-          <v-expansion-panel>
+          <v-expansion-panel eager>
             <v-expansion-panel-header><h2>охлаждение</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
               <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">

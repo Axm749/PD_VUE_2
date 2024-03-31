@@ -112,7 +112,7 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="condition"
-            class="mt-2"
+            class="mt-5"
         />
 
         <v-btn 
@@ -122,7 +122,25 @@
         >Старт</v-btn>
 
     </v-card>
+    <!-- уведомление об ошибке -->
+        <v-snackbar
+        v-model="snackbar"
+        :timeout="timeout"
+        absolute
+        >
+        {{ errorText }}
 
+        <template v-slot:action="{ attrs }">
+            <v-btn
+            color="accent"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+            >
+            Close
+            </v-btn>
+        </template>
+        </v-snackbar>
     <!-- вывод ответа -->
     <v-card
         class="pa-5 mt-5"
@@ -136,24 +154,7 @@
         >скрыть</v-btn>
     </v-card>
 
-    <!-- уведомление об ошибке -->
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="timeout"
-    >
-      {{ errorText }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+    
 
 
 
@@ -253,6 +254,12 @@
                     console.log('Condition', this.condition)
                     this.final_result= Math.ceil(result/this.condition)
                 }
+                console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this.final_result)
+                if (!this.final_result || this.final_result== Infinity){
+                    this.snackbar = true
+                    this.started = false
+                    return
+                }
             },
             getusli(){
                 this.Usli_shd = localStorage.getItem('usli')
@@ -279,6 +286,9 @@
                 } 
             },
         },
+        mounted(){
+            this.getusli()
+        }
     }
 </script>
 

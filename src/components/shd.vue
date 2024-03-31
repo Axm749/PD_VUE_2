@@ -320,17 +320,18 @@
     <v-snackbar
       v-model="snackbar"
       :timeout="timeout"
+      absolute
     >
       {{ errorText }}
 
       <template v-slot:action="{ attrs }">
         <v-btn
-          color="blue"
+          color="accent"
           text
           v-bind="attrs"
           @click="snackbar = false"
         >
-          Close
+          OK
         </v-btn>
       </template>
     </v-snackbar>
@@ -489,7 +490,6 @@ export default {
 
 
       
-      this.Power();
     }, //Старт
 
     Power() {
@@ -603,6 +603,7 @@ export default {
       localStorage.setItem("usli", this.usli);
       localStorage.setItem("usli", this.usli + 2);
       this.$emit("Usli", this.usli);
+      this.Power()
       // console.log('emitting Usli')
       
 
