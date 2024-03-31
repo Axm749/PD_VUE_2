@@ -34,7 +34,7 @@
             outlined
             required
             clearable
-            :label="WatOpt==true ? heatlabel2: heatlabel1"
+            :label="WatOpt===true ? heatlabel1: heatlabel2"
             :rules="rule"
             hide-details="auto"
             v-model.number="Heat"
@@ -54,6 +54,7 @@
         <v-checkbox 
             label="Использовать коммутаторы видеонаблюдения?" 
             v-on:change="komutat_Opt"
+            class="mt-5"
         />
 
         <div v-if="komutat_opt">
@@ -66,14 +67,14 @@
             :rules="rule"
             hide-details="auto"
             v-model.number="count_yadr"
-        ></v-text-field>
-        <br>
+            class="mt-5"
+        />
         <v-text-field
             type="number"
             outlined
             required
             clearable
-            :label="WatOpt==true ? komutat_yadrlabel2: komutat_yadrlabel1"
+            :label="WatOpt===true ? komutat_yadrlabel1: komutat_yadrlabel2"
             :rules="rule"
             hide-details="auto"
             v-model.number="komutat_yadr"
@@ -95,7 +96,7 @@
             outlined
             required
             clearable
-            :label="WatOpt==true ? komutat_dostlabel2: komutat_dostlabel1"
+            :label="WatOpt===true ? komutat_dostlabel1: komutat_dostlabel2"
             :rules="rule"
             hide-details="auto"
             v-model.number="komutat_dost"
@@ -107,10 +108,11 @@
             outlined
             required
             clearable
-            :label="WatOpt==true ? condition_label2: condition_label1"
+            :label="WatOpt==true ? condition_label1: condition_label2"
             :rules="rule"
             hide-details="auto"
             v-model.number="condition"
+            class="mt-2"
         />
         <v-btn 
             @click="start" 
@@ -137,31 +139,45 @@
     export default {
         name: 'my-condition',
         data:() =>({
-            started: false,
-            final_result:0,
-            komutat_opt: false,
-            Usli_self: false,
-            WatOpt: false,
-            Usli_shd: '...',
-            count_yadr:'...',
-            count_dost:'...',
-            Heat: '...',
-            useWats: false,
-            K_sred: '...',
+            started: false,         // вывод результатов расчета (показывать или нет)
+
+            final_result:0,         // количество кондиционеров
+
+            komutat_opt: false,     // опция учета дополнительных коммутаторов
+            Usli_self: false,       // дать ли пользователю вводить число узлов СХД
+            Usli_shd: '...',        // число узлов СХД
+
+            
+            
+            
+
+            // useWats: false,
+            K_sred: '...',          // Усреднённое тепловыделение в процентах (0-100)
+
+            WatOpt: true,           // использование ваттов как единиц измерения
+            // все текстовые приписки к соответствующим полям ввода в зависимости от единиц измерения
             heatlabel2:'Максимальное тепловыделение от 1 узла (BTU/hr)',
             heatlabel1:'Максимальное тепловыделение от 1 узла (Bт)',
-            rule: [
-            value => !!value || 'Необходимо заполнить это поле.',
-    ],                       //Правила для текстовых полей
+            Heat: '...',            // тепловыделение одного узла
+
             komutat_yadrlabel2:'Тепловыделение коммутатора ядра (BTU/hr)',
             komutat_yadrlabel1:'Тепловыделение коммутатора ядра (Bт)',
-            komutat_yadr:'...',
+            komutat_yadr:'...',     // Тепловыделение коммутатора ядра
+            count_yadr:'...',       // Количество коммутаторов ядра
+
             komutat_dostlabel2:'Тепловыделение коммутатора доступа (BTU/hr)',
             komutat_dostlabel1:'Тепловыделение коммутатора доступа (Bт)',
-            komutat_dost:'...',
-            condition:'...',
+            komutat_dost:'...',     // Тепловыделение коммутатора доступа
+            count_dost:'...',       // Количество коммутаторов доступа
+
             condition_label2:'Мощность кондиционера (BTU/hr)',
             condition_label1:'Мощность кондиционера (Вт)',
+            condition:'...',        // Мощность кондиционера
+
+
+            rule: [
+                value => !!value || 'Необходимо заполнить это поле.',
+                ],                  //Правила для текстовых полей
         }),
         methods:{
             start(){
@@ -172,13 +188,16 @@
                     this.komutat_dost = 0
                     this.count_yadr=0
                     this.count_dost=0
+                    this.komutat_klast=0
                 }
-                if(this.useWats==false){
+
+                console.log(this.WatOpt)
+                if(this.WatOpt==false){
+
                     result = (
-                        (this.Heat*this.K_sred/100*this.Usli_shd)
-                        /3.41 +this.komutat_klast/3.41
-                        +(this.count_yadr*this.komutat_yadr+this.count_dost*this.komutat_dost)
-                        /3.41
+                        (this.Heat*this.K_sred/100*this.Usli_shd)/3.41 
+                        // +this.komutat_klast/3.41
+                        +(this.count_yadr*this.komutat_yadr+this.count_dost*this.komutat_dost)/3.41
                         )
                     console.log('result', result)
                     console.log('Heat', this.Heat)
@@ -187,14 +206,18 @@
                     console.log('komutat_dost', this.komutat_dost)
                     console.log('komutat_opt', this.komutat_opt)
                     console.log('Condition', this.condition)
-                    // console.log('Condition', result)
-                    this.final_result= Math.ceil(result/this.condition)
+                    this.final_result= Math.ceil(result/(this.condition/3.41))
                 }else{
-                    result = (
-                        (this.Heat*this.K_sred/100*this.Usli_shd)
-                        +this.komutat_klast+
-                        (this.count_yadr*this.komutat_yadr+this.count_dost*this.komutat_dost)
-                    )
+
+
+                    
+                    result = (this.Heat * (this.K_sred/100) * this.Usli_shd)
+
+                    // result += this.komutat_klast
+
+                    result += this.count_yadr * this.komutat_yadr + this.count_dost * this.komutat_dost
+
+
                     console.log('result', result)
                     console.log('Heat', this.Heat)
                     console.log('K_sred', this.K_sred)
