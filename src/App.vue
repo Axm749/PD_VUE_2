@@ -3,7 +3,7 @@
     <div :class="$vuetify.theme.dark==false ? 'body_light' : 'body_dark'">
       <div 
         v-if="!regularView"
-        :class="margins === true ? 'ma-0' : 'ma-5'"
+        :class="noMargins === true ? 'ma-0' : 'ma-5'"
       >
         <shd
         @Power="getpower"
@@ -21,7 +21,7 @@
 
       <div 
         v-if="regularView"
-        :class="margins === true ? 'ma-0' : 'ma-5'"
+        :class="noMargins === true ? 'ma-0' : 'ma-5'"
       >
         <v-expansion-panels
           class="mt-6"
@@ -61,44 +61,52 @@
         </v-expansion-panels>
       </div>
       
+      <div 
+        :class="noMargins === true ? 'ma-0 mt-12 module_bg' : 'ma-5 mt-12 module_bg'"
+      >
+
       
-      <v-expansion-panels
-          :class="margins === true ? 'ma-0 mt-12 pa-5' : 'ma-0 mt-12 pa-5'"
-          accordion
-        >
-          <v-expansion-panel>
-            <v-expansion-panel-header><h2> 
-                <v-icon>mdi-cog</v-icon>
-                Дополнительно
-              </h2></v-expansion-panel-header>
-            <v-expansion-panel-content
-            >
-              
-              <v-checkbox
-                info
-                hide-details
-                label="Использовать альтернативное отображение"
-                v-model="regularView"
-              />
-              <v-checkbox
-                info
-                hide-details
-                label="Убрать отступы"
-                v-model="margins"
-              />
+        <v-expansion-panels
+            
+            accordion
+          >
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <h2>Дополнительно</h2>
+                <template v-slot:actions>
+                  <v-icon>
+                    mdi-cog
+                  </v-icon>
+                </template>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content
+              >
+                
+                <v-checkbox
+                  info
+                  hide-details
+                  label="Использовать альтернативное отображение"
+                  v-model="regularView"
+                />
+                <v-checkbox
+                  info
+                  hide-details
+                  label="Убрать отступы"
+                  v-model="noMargins"
+                />
 
-              <v-switch
-                v-model="$vuetify.theme.dark"
-                inset
-                label="Тёмная тема"
-                persistent-hint
-              />
+                <v-switch
+                  v-model="$vuetify.theme.dark"
+                  inset
+                  label="Тёмная тема"
+                  persistent-hint
+                />
 
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        
-      </v-expansion-panels>
-
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          
+        </v-expansion-panels>
+      </div>
 
 
     </div>
@@ -128,7 +136,7 @@ export default {
 
   data: () => ({
     regularView: false,
-    margins: false,
+    noMargins: false,
   }),
 
   methods:{
