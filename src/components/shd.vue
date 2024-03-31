@@ -48,13 +48,75 @@
         v-model="converg"
         class="mt-5"
       />
+
+      <!-- если диск нестандартный -->
+      <template v-if="standart">
+        <v-dialog
+          v-model="dialog2"
+          transition="dialog-bottom-transition"
+          width="80%"
+          :scrollable="false"
+          aria-hidden="true"
+        >
+        <template v-slot:activator="{ props2 }">
+            <v-btn
+              class="mt-2 mt-5"
+              width="100%"
+              color="primary"
+              v-bind="props2"
+              @click="getStores"
+              ><v-icon>mdi-cog</v-icon>
+              Настройки узла
+            </v-btn>
+          </template>
+
+        
+          <v-card
+            class="pa-5 mt-5"
+          >
+
+          <h1>параметры дисковых хранилищ узлов</h1>
+
+            <v-text-field
+              flat
+              type="number"
+              required
+              outlined
+              clearable
+              label="Объём диска (Тбайт)"
+              :rules="rule"
+              hide-details="auto"
+              v-model.number="capacity"
+              class="mt-5"
+            />
+            
+            <v-text-field
+              flat
+              type="number"
+              required
+              outlined
+              clearable
+              label="Количество дисков"
+              :rules="rule"
+              hide-details="auto"
+              v-model.number="discs"
+              class="mt-5"
+            />
+          </v-card>
+        <!-- <div v-show="standart"> -->
+          
+        <!-- </div> -->
+        </v-dialog>
+
+      </template>
+
       <!-- настройки сервера -->
       <template v-if="converg">
         <v-dialog
           v-model="dialog1"
           transition="dialog-bottom-transition"
           width="80%"
-          :scrollable="false"
+          
           aria-hidden="true"
         >
           <template v-slot:activator="{ props1 }">
@@ -149,40 +211,12 @@
 
 
           </v-card>
-
-
         </v-dialog>
       </template>
 
       
-      <!-- если диск нестандартный -->
-      <div v-show="standart">
-        <v-text-field
-          flat
-          type="number"
-          required
-          outlined
-          clearable
-          label="Объём диска (Тбайт)"
-          :rules="rule"
-          hide-details="auto"
-          v-model.number="capacity"
-          class="mt-5"
-        />
-        
-        <v-text-field
-          flat
-          type="number"
-          required
-          outlined
-          clearable
-          label="Количество дисков"
-          :rules="rule"
-          hide-details="auto"
-          v-model.number="discs"
-          class="mt-5"
-        />
-      </div>
+      
+      
 
       <!-- выбор режима -->
       <v-select
@@ -261,7 +295,6 @@
       v-show="started"
     >
       <!-- <h2>Вывод для раздела системы хранения данных</h2> -->
-      <!-- <div v-show="started"> -->
         <p>Требуемый объём для хранения видеоданных <strong>{{ volume }} TiB</strong> </p>
         <p>
           Требуемый объём СХД с учетом перевода TiB в Тбайт <strong>{{ volume1 }} Тбайт</strong>
@@ -282,7 +315,6 @@
           @click="started=false"
           class="mt-2 ml-5"
         >скрыть</v-btn>
-      <!-- </div> -->
     </v-card>
   </div>
 
@@ -330,6 +362,7 @@ export default {
       converg: false, //Параметр, отвечающий за гиперконвергентную/негиперконвергентную систему(по умолчанию негиперконвергентная)
       dialog: false, //Параметр, отвечающий за отображение видеонаблюдения
       dialog1: false,
+      dialog2: false,
       video: false, //Параметр, отвечающий за использование битрейта с видеонаблюдения
       rule: [(value) => !!value || "Необходимо заполнить это поле."], //Правила для текстовых полей
       options: [
@@ -408,6 +441,15 @@ export default {
         this.convergChecked = true
       } else {
         this.dialog1 = false;
+      }
+    },
+
+    getStores(){
+        if (this.dialog2 === false) {
+        this.dialog2 = true;
+        this.standart = true
+      } else {
+        this.dialog2 = false;
       }
     },
 
@@ -504,43 +546,62 @@ export default {
     }, //Ф-ция, присваивающая значение битрейта при разных режимах
 
     Standart() {
-      if (!this.standart && !this.converg) {
-        //Стандартный узел и негиперконвергентная система
-        this.usli = Math.ceil(this.volume1 / 15 / 8);
-        // console.log("Количество узлов :   ", this.usli, " шт");
-        // console.log(
-        //   "Количество узлов с резервированием:   ",
-        //   this.usli + 2,
-        //   " шт"
-        // );
-        localStorage.setItem("usli", null);
-        localStorage.setItem("usli", this.usli + 2);
-        this.$emit("Usli", this.usli);
-      } else if (!this.standart && this.converg) {
-        //Стандартный узел и гиперконвергентная система
-        this.usli = Math.ceil(this.volume3 / 7 / 4);
-        // console.log("Количество узлов :   ", this.usli, " шт");
-        // console.log(
-        //   "Количество узлов с резервированием:   ",
-        //   this.usli + 2,
-        //   " шт"
-        // );
-        localStorage.setItem("usli", null);
-        localStorage.setItem("usli", this.usli + 2);
-        this.$emit("Usli", this.usli);
-      } else {
-        //Нестандартный узел и негиперконвергентная система
-        this.usli = Math.ceil(this.volume1 / +this.discs / +this.capacity);
-        // console.log("Количество узлов :   ", this.usli, " шт");
-        // console.log(
-        //   "Количество узлов с резервированием:   ",
-        //   this.usli + 2,
-        //   " шт"
-        // );
+      if (!this.standart){
+        // стандартные узлы
+        if (this.converg){
+          // гиперконвергентные системы
+          this.usli = Math.ceil(this.volume3 / 7 / 4);
+          localStorage.setItem("usli", null);
+          localStorage.setItem("usli", this.usli + 2);
+          this.$emit("Usli", this.usli);
+        } else {
+          // обычные системы
+          this.usli = Math.ceil(this.volume3 / 15 / 8);
+          localStorage.setItem("usli", null);
+          localStorage.setItem("usli", this.usli + 2);
+          this.$emit("Usli", this.usli);
+        }
+      } else{
+        // свои узлы
+        // здесь не важно, какой тип системы, ведь оно учитывалось в объёме
+        this.usli = Math.ceil(this.volume3 / this.discs / this.capacity);
         localStorage.setItem("usli", null);
         localStorage.setItem("usli", this.usli + 2);
         this.$emit("Usli", this.usli);
       }
+      
+      
+      // if (!this.standart && !this.converg) {
+      //   //Стандартный узел и негиперконвергентная система
+      //   this.usli = Math.ceil(this.volume1 / 15 / 8);
+      //   localStorage.setItem("usli", null);
+      //   localStorage.setItem("usli", this.usli + 2);
+      //   this.$emit("Usli", this.usli);
+      // } else if (!this.standart && this.converg) {
+      //   //Стандартный узел и гиперконвергентная система
+      //   this.usli = Math.ceil(this.volume3 / 7 / 4);
+      //   // console.log("Количество узлов :   ", this.usli, " шт");
+      //   // console.log(
+      //   //   "Количество узлов с резервированием:   ",
+      //   //   this.usli + 2,
+      //   //   " шт"
+      //   // );
+      //   localStorage.setItem("usli", null);
+      //   localStorage.setItem("usli", this.usli + 2);
+      //   this.$emit("Usli", this.usli);
+      // } else {
+      //   //Нестандартный узел и негиперконвергентная система
+      //   this.usli = Math.ceil(this.volume1 / this.discs / this.capacity);
+      //   // console.log("Количество узлов :   ", this.usli, " шт");
+      //   // console.log(
+      //   //   "Количество узлов с резервированием:   ",
+      //   //   this.usli + 2,
+      //   //   " шт"
+      //   // );
+      //   localStorage.setItem("usli", null);
+      //   localStorage.setItem("usli", this.usli + 2);
+      //   this.$emit("Usli", this.usli);
+      // }
     }, //Ф-ция, рассчитывающа число узлов для различных типов систем и узлов
   },
 };
