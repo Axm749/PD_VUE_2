@@ -565,12 +565,11 @@ export default {
           this.usli = Math.ceil(this.volume1 / this.discs / this.capacity);
         }
 
-        localStorage.setItem("usli", null);
-        localStorage.setItem("usli", this.usli + 2);
-        this.$emit("Usli", this.usli);
-        
       }
-      
+      localStorage.setItem("usli", this.usli);
+      localStorage.setItem("usli", this.usli + 2);
+      this.$emit("Usli", this.usli);
+      // console.log('emitting Usli')
       
       // if (!this.standart && !this.converg) {
       //   //Стандартный узел и негиперконвергентная система

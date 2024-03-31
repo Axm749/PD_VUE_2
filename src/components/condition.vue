@@ -206,7 +206,9 @@
                 }
             },
             getusli(){
-                return this.Usli_shd= localStorage.getItem('usli')
+                this.Usli_shd = localStorage.getItem('usli')
+                console.log(this.Usli_shd)
+                return this.Usli_shd
             },
             komutat_Opt(){
                 
