@@ -320,7 +320,6 @@
     <v-snackbar
       v-model="snackbar"
       :timeout="timeout"
-      absolute
     >
       {{ errorText }}
 

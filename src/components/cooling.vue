@@ -124,9 +124,9 @@
     </v-card>
     <!-- уведомление об ошибке -->
         <v-snackbar
-        v-model="snackbar"
-        :timeout="timeout"
-        absolute
+            v-model="snackbar"
+            :timeout="timeout"
+            
         >
         {{ errorText }}
 
@@ -137,7 +137,7 @@
             v-bind="attrs"
             @click="snackbar = false"
             >
-            Close
+            ОК
             </v-btn>
         </template>
         </v-snackbar>
@@ -226,13 +226,13 @@
                         // +this.komutat_klast/3.41
                         +(this.count_yadr*this.komutat_yadr+this.count_dost*this.komutat_dost)/3.41
                         )
-                    console.log('result', result)
-                    console.log('Heat', this.Heat)
-                    console.log('K_sred', this.K_sred)
-                    console.log('Usli_shd', this.Usli_shd)
-                    console.log('komutat_dost', this.komutat_dost)
-                    console.log('komutat_opt', this.komutat_opt)
-                    console.log('Condition', this.condition)
+                    // console.log('result', result)
+                    // console.log('Heat', this.Heat)
+                    // console.log('K_sred', this.K_sred)
+                    // console.log('Usli_shd', this.Usli_shd)
+                    // console.log('komutat_dost', this.komutat_dost)
+                    // console.log('komutat_opt', this.komutat_opt)
+                    // console.log('Condition', this.condition)
                     this.final_result= Math.ceil(result/(this.condition/3.41))
                 }else{
 
@@ -245,16 +245,16 @@
                     result += this.count_yadr * this.komutat_yadr + this.count_dost * this.komutat_dost
 
 
-                    console.log('result', result)
-                    console.log('Heat', this.Heat)
-                    console.log('K_sred', this.K_sred)
-                    console.log('Usli_shd', this.Usli_shd)
-                    console.log('komutat_dost', this.komutat_dost)
-                    console.log('komutat_opt', this.komutat_opt)
-                    console.log('Condition', this.condition)
+                    // console.log('result', result)
+                    // console.log('Heat', this.Heat)
+                    // console.log('K_sred', this.K_sred)
+                    // console.log('Usli_shd', this.Usli_shd)
+                    // console.log('komutat_dost', this.komutat_dost)
+                    // console.log('komutat_opt', this.komutat_opt)
+                    // console.log('Condition', this.condition)
                     this.final_result= Math.ceil(result/this.condition)
                 }
-                console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this.final_result)
+                // console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this.final_result)
                 if (!this.final_result || this.final_result== Infinity){
                     this.snackbar = true
                     this.started = false

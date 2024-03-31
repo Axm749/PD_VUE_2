@@ -74,6 +74,26 @@
         >Старт</v-btn>
     </v-card>
 
+    <!-- уведомление об ошибке -->
+    <v-snackbar
+            v-model="snackbar"
+            :timeout="timeout"
+            
+        >
+        {{ errorText }}
+
+        <template v-slot:action="{ attrs }">
+            <v-btn
+            color="accent"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+            >
+            ОК
+            </v-btn>
+        </template>
+        </v-snackbar>
+
     <v-card 
         class="pa-5 mt-5"
         v-show="started"
@@ -103,8 +123,12 @@
             self: false,     //Параметр, отвечающий за ручной ввод мощности для питания СХД
             started: false,  //Параметр, отвечающий за вывод результатов работы электропитания после нажатия "Старт"
             rule: [
-            value => !!value || 'Необходимо заполнить это поле.',
-    ],                       //Правила для текстовых полей
+                value => !!value || 'Необходимо заполнить это поле.',
+            ],                       //Правила для текстовых полей
+            snackbar: false,      // окошко об ошибке
+            timeout: 2500,
+            errorText: 'Неверно введены данные или они отсутствуют',
+
         }),
         methods:{
             start(){
@@ -126,6 +150,11 @@
                         *0.85/this.power
                         )
                     console.log("Время работы устройства:   ", this.result, " ч"); 
+                }
+                if (!this.result || this.result== Infinity){
+                    this.snackbar = true
+                    this.started = false
+                    return
                 }
             },              //Ф-ция старт
             getPower(){
