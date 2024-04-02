@@ -5,6 +5,11 @@
 yarn install
 ```
 
+### add store
+```
+yarn add vuex
+```
+
 ### Compiles and hot-reloads for development
 ```
 yarn serve
