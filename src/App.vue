@@ -223,7 +223,7 @@ body{
 }
 
 .body_dark{
-  background-image: linear-gradient( 120deg, #e7c255, #fcdb04fb);
+  background-image: linear-gradient( 120deg, #691e1e, #4f2a00);
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;

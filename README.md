@@ -5,6 +5,11 @@
 yarn install
 ```
 
+### add store
+```
+yarn add vuex
+```
+
 ### Compiles and hot-reloads for development
 ```
 yarn serve
@@ -17,7 +22,7 @@ yarn build
 
 ### Lints and fixes files
 ```
-yarn lint //hi
+yarn lint //hi-hi
 ```
 
 ### Customize configuration
