@@ -1,172 +1,214 @@
 <template>
-    <div>
+  <div>
     <v-card class="pa-5">
-        <h1>Электропитание</h1>
+      <h1>Электропитание</h1>
 
-        
-        <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            label="Напряжение аккумуляторных батарей (В)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="voultage"
-            class="mt-5"
-        />
-        
-        <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            label="Емкость аккумуляторной батареи (А/ч)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="capacity"
-            class="mt-5"
-        />
-        <v-text-field
-            type="number"
-            outlined
-            clearable
-            required
-            label="Кол-во аккумуляторных батарей в цепи (шт.)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="batteries"
-            class="mt-5"
-        />
-        <v-text-field
-            type="number"
-            outlined
-            required
-            clearable
-            label="КПД преобразователя в долях (0,8 - 1,0)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="kpd"
-            class="mt-5"
-        />
-        <v-text-field
-            type="number"
-            :disabled="self === false "
-            outlined
-            clearable
-            label="Макс. суммарная мощность нагрузой (Вт)"
-            :rules="rule"
-            hide-details="auto"
-            v-model.number="power"
-            class="mt-5"
-        />
-        <v-checkbox 
-            info
-            hide-details
-            label="Ввести вручную?" 
-            v-model="self"
-            class="mt-5"
-        />
-        <v-btn 
-            @click="start" 
-            color="primary"
-            class="mt-5"
-        >Старт</v-btn>
+      <v-text-field
+        type="number"
+        outlined
+        required
+        clearable
+        label="Напряжение аккумуляторных батарей (В)"
+        :rules="getRules"
+        hide-details="auto"
+        v-model.number="voultage"
+        class="mt-5"
+      />
+
+      <v-text-field
+        type="number"
+        outlined
+        required
+        clearable
+        label="Емкость аккумуляторной батареи (А/ч)"
+        :rules="getRules"
+        hide-details="auto"
+        v-model.number="capacity"
+        class="mt-5"
+      />
+      <v-text-field
+        type="number"
+        outlined
+        clearable
+        required
+        label="Кол-во аккумуляторных батарей в цепи (шт.)"
+        :rules="getRules"
+        hide-details="auto"
+        v-model.number="batteries"
+        class="mt-5"
+      />
+      <v-text-field
+        type="number"
+        outlined
+        required
+        clearable
+        label="КПД преобразователя в долях (0,8 - 1,0)"
+        :rules="getRules"
+        hide-details="auto"
+        v-model.number="kpd"
+        class="mt-5"
+      />
+      <v-text-field
+        type="number"
+        :disabled="self === false"
+        outlined
+        clearable
+        label="Макс. суммарная мощность нагрузой (Вт)"
+        :rules="getRules"
+        hide-details="auto"
+        v-model.number="power"
+        class="mt-5"
+      />
+      <v-checkbox
+        info
+        hide-details
+        label="Ввести вручную?"
+        v-model="self"
+        class="mt-5"
+      />
+      <v-btn @click="startPowerAct" color="primary" class="mt-5">Старт</v-btn>
     </v-card>
 
     <!-- уведомление об ошибке -->
-    <v-snackbar
-            v-model="snackbar"
-            :timeout="timeout"
-            
-        >
-        {{ errorText }}
+    <v-snackbar v-model="snackbar" :timeout="getTimeOut">
+      {{ getErrorText }}
 
-        <template v-slot:action="{ attrs }">
-            <v-btn
-            color="accent"
-            text
-            v-bind="attrs"
-            @click="snackbar = false"
-            >
-            ОК
-            </v-btn>
-        </template>
-        </v-snackbar>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="accent" text v-bind="attrs" @click="snackbar = false">
+          ОК
+        </v-btn>
+      </template>
+    </v-snackbar>
 
-    <v-card 
-        class="pa-5 mt-5"
-        v-show="started"
-    >
-        <h2>Время работы устройства:</h2>
-        <p><strong>{{ result }}, ч.</strong></p>
-        <v-btn
-          @click="started=false"
-          class="mt-2"
-        >скрыть</v-btn>
-   </v-card>
-
-   
+    <v-card class="pa-5 mt-5" v-show="started">
+      <h2>Время работы устройства:</h2>
+      <p>
+        <strong>{{ getTimeWork }}, ч.</strong>
+      </p>
+      <v-btn @click="started = false" class="mt-2">скрыть</v-btn>
+    </v-card>
   </div>
 </template>
 
 <script>
-    export default{
-        name: 'power_vue',
-        data: () =>({
-            voultage: '...', //Напряжение аккумуляторных батарей
-            power: '...',    //Мощность для питания СХД
-            kpd: '...',      //КПД баттарей
-            batteries: '...',//Кол-во батарей
-            capacity: '...', //Ёмкость батарей
-            result:0,        //Параметр, отвечающий за вывод результата раздела электропитания
-            self: false,     //Параметр, отвечающий за ручной ввод мощности для питания СХД
-            started: false,  //Параметр, отвечающий за вывод результатов работы электропитания после нажатия "Старт"
-            rule: [
-                value => !!value || 'Необходимо заполнить это поле.',
-            ],                       //Правила для текстовых полей
-            snackbar: false,      // окошко об ошибке
-            timeout: 2500,
-            errorText: 'Неверно введены данные или они отсутствуют',
+import { mapGetters, mapActions } from "vuex";
 
-        }),
-        methods:{
-            start(){
-                
-                this.started = true
-                if(this.self){ //Расчёт при ручном вводе
-                    this.result =0.1 * Math.ceil(
-                        10*this.voultage*this.capacity
-                        *this.batteries*this.kpd
-                        *0.85/this.power)
-
-                    console.log("Время работы устройства:   ", this.result, " ч");
-                }else{         //Расчёт при автоматическом вводе
-                    this.power = ''
-                    this.power = localStorage.getItem('wats')
-                    this.result = 0.1 * Math.ceil(
-                        10*this.voultage*this.capacity
-                        *this.batteries*this.kpd
-                        *0.85/this.power
-                        )
-                    console.log("Время работы устройства:   ", this.result, " ч"); 
-                }
-                if (!this.result || this.result== Infinity){
-                    this.snackbar = true
-                    this.started = false
-                    return
-                }
-            },              //Ф-ция старт
-            getPower(){
-                return this.power = localStorage.getItem('wats')
-            }               //Ф-ция, отвечающая за приём параметра мощности из раздела СХД
+export default {
+  name: "power_vue",
+  computed:{
+        ...mapGetters('myPower', 
+        [
+            'getVoultage', 
+            'getCapacity', 
+            'getBatteries', 
+            'getKpd',
+            'getPower',
+            'getTimeWork',
+            'getStarted',
+            'getSnackbar',
+            'getTimeOut',
+            'getSelf',
+            'getRules',
+            'getErrorText',
+        ]
+        ),
+        voultage:{
+            get() {
+                console.log('get', this.getVoultage)
+                return this.getVoultage
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setVoultageAct(value)
+            }
         },
-        mounted(){
-            this.getPower()
-        }
-    }
+        capacity:{
+            get() {
+                console.log('get', this.getCapacity)
+                return this.getCapacity
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setCapacityAct(value)
+            }
+        },
+        batteries:{
+            get() {
+                console.log('get', this.getBatteries)
+                return this.getBatteries
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setBatteriesAct(value)
+            }
+        },
+        kpd:{
+            get() {
+                console.log('get', this.getKpd)
+                return this.getKpd
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setKpdAct(value)
+            }
+        },
+        power:{
+            get() {
+                console.log('get', this.getPower)
+                return this.getPower
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setPowerAct(value)
+            }
+        },
+        self:{
+            get() {
+                console.log('get', this.getSelf)
+                return this.getSelf
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setSelfAct(value)
+            }
+        },
+        started:{
+            get() {
+                console.log('get', this.getStarted)
+                return this.getStarted
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setStartedAct(value)
+            }
+        },
+        snackbar:{
+            get() {
+                console.log('get', this.getSnackbar)
+                return this.getSnackbar
+            },
+            async set(value){
+                console.log('set', value)
+                await this.setSnackbarAct(value)
+            }
+        },
+    },
+  methods: {
+    ...mapActions('myPower', 
+        [
+            'setVoultageAct',
+            'setCapacityAct',
+            'setBatteriesAct',
+            'setKpdAct',
+            'setPowerAct',
+            'startPowerAct',
+            'setSelfAct',
+            'setStartedAct',
+            'setSnackbarAct'
+        ]
+        ),
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

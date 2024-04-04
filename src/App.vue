@@ -101,8 +101,6 @@
             <v-expansion-panel-content>
               <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
                 <shd
-                @Power="getpower"
-                @Usli="getUsli"
               />
               </div>
               
@@ -217,15 +215,15 @@ body{
 }
 
 .body_light{
-  background-image: linear-gradient( 0deg, #2ebf91, #4286f4);
-  /* background-image: linear-gradient( 120deg, #33691E, #4DD0E1); */
+  /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
+  background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;
 }
 
 .body_dark{
-  background-image: linear-gradient( 120deg, #691e1e, #955e20);
+  background-image: linear-gradient( 120deg, #e7c255, #fcdb04fb);
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;
@@ -265,8 +263,8 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 
 .module_bg{
   background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 0px;
+  padding: 2px;
   margin-top: 20px;
   /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.127); */
   /* margin: 5px; */
