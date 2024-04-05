@@ -82,6 +82,7 @@ export default{
         setWatsMut:(state,data)=>{
             state.wats = data
         },
+
         extendConvServParamListMut:(state)=>{
             state.convServParam.push({
               id: state.convServParam.length, 
@@ -111,6 +112,7 @@ export default{
                 state.dialogVideo = false;
             }
         }, //Ф-ция, отвечающая за вкладку с видеонаблюдением
+         //Ф-ция, отвечающая за вкладку с видеонаблюдением
         setConvergDialogMut:(state)=>{
             if (state.dialogConverg === false) {
                 state.dialogConverg = true;

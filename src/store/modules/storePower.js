@@ -140,5 +140,6 @@ export default{
         getErrorText:(state)=>{
             return state.errorText
         },
+        
     },
 }
