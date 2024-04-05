@@ -15,7 +15,7 @@
         required
         clearable
         label="Количество устройств"
-        :rules="rule"
+        :rules="getRule"
         hide-details="auto"
         v-model.number="users"
         class="mt-5"
@@ -28,7 +28,7 @@
         outlined
         clearable
         label="Дни хранения"
-        :rules="rule"
+        :rules="getRule"
         hide-details="auto"
         v-model.number="days"
         class="mt-5"
@@ -53,7 +53,7 @@
       <!-- если диск нестандартный -->
       <template v-if="standart">
         <v-dialog
-          v-model="dialog2"
+          v-model="storeDialog"
           transition="dialog-bottom-transition"
           width="80%"
           :scrollable="false"
@@ -65,7 +65,7 @@
               width="100%"
               color="primary"
               v-bind="props2"
-              @click="getStores"
+              @click="setStoresDialogAct"
               ><v-icon>mdi-cog</v-icon>
               Настройки узла
             </v-btn>
@@ -85,7 +85,7 @@
                 outlined
                 clearable
                 label="Объём диска (Тбайт)"
-                :rules="rule"
+                :rules="getRule"
                 hide-details="auto"
                 v-model.number="capacity"
                 class="mt-5"
@@ -98,7 +98,7 @@
                 outlined
                 clearable
                 label="Количество дисков"
-                :rules="rule"
+                :rules="getRule"
                 hide-details="auto"
                 v-model.number="discs"
                 class="mt-5"
@@ -116,7 +116,7 @@
       <!-- настройки сервера -->
       <template v-if="converg">
         <v-dialog
-          v-model="dialog1"
+          v-model="convergDialog"
           transition="dialog-bottom-transition"
           width="80%"
           aria-hidden="true"
@@ -127,7 +127,7 @@
               width="100%"
               color="primary"
               v-bind="props1"
-              @click="getConverg"
+              @click="setConvergDialogAct"
               ><v-icon>mdi-cog</v-icon>
               Настройки сервера
             </v-btn>
@@ -145,7 +145,7 @@
               
 
               <div 
-                v-for="(server, index) in convServParam"
+                v-for="(server, index) in getConvServParams"
                 :key="index"
                 class="mt-5 inCardTab"
               >
@@ -159,7 +159,7 @@
                   label="название"
                   prepend-icon="mdi-table-column"
                   placeholder="hello"
-                  :rules="rule"
+                  :rules="getRule"
                   hide-details="auto"
                   class="mt-2"
                 />
@@ -172,7 +172,7 @@
                   clearable
                   prepend-icon="mdi-counter"
                   label="количество (шт)"
-                  :rules="rule"
+                  :rules="getRule"
                   hide-details="auto"
                   class="mt-5"
                 />
@@ -185,13 +185,13 @@
                   clearable
                   prepend-icon="mdi-disc-player"
                   label="объём (ГБ)"
-                  :rules="rule"
+                  :rules="getRule"
                   hide-details="auto"
                   class="mt-5"
                 />
                 <v-btn
                   color="error"
-                  @click="deleteItem(server, index)"
+                  @click="deleteItemAct(server, index)"
                   class="mt-5 ml-2 mb-2"
                 >  <v-icon>mdi-trash-can</v-icon>  удалить </v-btn>
 
@@ -199,7 +199,7 @@
 
               <v-btn
                 color="primary"
-                @click="extendConvServParamList"
+                @click="extendConvServParamListAct"
                 class="ma-5"
               >добавить</v-btn>
 
@@ -221,12 +221,12 @@
       <!-- выбор режима -->
       <v-select
         required
-        v-model="options.value"
+        v-model="getOptions.value"
         density="comfortable"
         style="margin-top: 10px"
         hide-details
         outlined
-        :items="options"
+        :items="getOptions"
         item-text="name"
         item-value="value"
         label="Выберите режим"
@@ -238,22 +238,22 @@
         required
         type="number"
         style="margin-bottom: 20px"
-        v-show="options.value == 'user'"
+        v-show="getOptions.value == 'user'"
         flat
         outlined
         clearable
         label="Мбит/сек"
-        :rules="rule"
+        :rules="getRule"
         hide-details="auto"
-        v-model.number="mBR"
+        v-model.number="MBr"
         class="mt-5"
       ></v-text-field>
 
 
       <!-- доступ к вычислениям видеонаблюдения -->
-      <template v-if="options.value == 'video'">
+      <template v-if="getOptions.value == 'video'">
         <v-dialog
-          v-model="dialog"
+          v-model="videoDialog"
           novalidate
           width="auto"
           aria-hidden="true"
@@ -265,14 +265,14 @@
               max-width="100%"
               color="primary"
               v-bind="props"
-              @click="getVideo"
+              @click="setVideoDialogAct"
               class="mt-5 mr-5"
               ><v-icon>mdi-cog</v-icon>
               Дополнительно
             </v-btn>
           </template>
 
-          <video1 @cam_bitrate="getMbrVideo" />
+          <video1 @cam_bitrate="setMbrVideoAct" />
 
         </v-dialog>
       </template>
@@ -281,7 +281,7 @@
 
       <!-- старт -->
       <v-btn 
-        @click="start" 
+        @click="StartShdAct" 
         color="primary" 
         class="mt-5"
       >Старт</v-btn>
@@ -294,24 +294,24 @@
       v-show="started"
     >
       <!-- <h2>Вывод для раздела системы хранения данных</h2> -->
-        <p>Требуемый объём для хранения видеоданных <strong>{{ volume }} TiB</strong> </p>
+        <p>Требуемый объём для хранения видеоданных <strong>{{ getMainVolume }} TiB</strong> </p>
         <p>
-          Требуемый объём СХД с учетом перевода TiB в Тбайт <strong>{{ volume1 }} Тбайт</strong>
+          Требуемый объём СХД с учетом перевода TiB в Тбайт <strong>{{ getMainVolumeTbait }} Тбайт</strong>
         </p>
         <div v-show="converg">
-          <p>Объём с резервным копированием <strong>{{ volume2 }} Тбайт</strong></p>
+          <p>Объём с резервным копированием <strong>{{ getRezervVolume }} Тбайт</strong></p>
           <p>С учетом резерва требуемая от СХД полезная ёмкость составит
-            <strong>{{ volume3 }} Тбайт;</strong></p>
+            <strong>{{ getUsefullVolume }} Тбайт;</strong></p>
         </div>
-        <p>Узлов без резервирования <strong>{{ usli }} шт;</strong></p>
-        <p>Узлов с резервированием <strong>{{ usli + 2 }} шт.</strong></p>
+        <p>Узлов без резервирования <strong>{{ getUsliShd }} шт;</strong></p>
+        <p>Узлов с резервированием <strong>{{ getUsliShd + 2 }} шт.</strong></p>
 
         <v-btn
           disabled
           class="mt-2  mr-5"
         >сохранить (WIP)</v-btn>
         <v-btn
-          @click="started=false"
+          @click="setShdStartedAct(false)"
           class="mt-2"
         >скрыть</v-btn>
     </v-card>
@@ -319,9 +319,9 @@
     <!-- уведомление об ошибке -->
     <v-snackbar
       v-model="snackbar"
-      :timeout="timeout"
+      :timeout="getTimeout"
     >
-      {{ errorText }}
+      {{ getErrorText }}
 
       <template v-slot:action="{ attrs }">
         <v-btn
@@ -343,6 +343,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 import video1 from "./video1.vue";
 
 export default {
@@ -350,263 +351,176 @@ export default {
   components: {
     video1,
   },
-  data() {
-    return {
-      snackbar: false,      // окошко об ошибке
-      timeout: 2500,
-      errorText: 'Неверно введены данные или они отсутствуют',
-
-
-      convServParam: [
-        {id: 0, title: `сервер управления`, count: 1, volume: 300},
-        {id: 1, title: `сервер архивного управления`, count: 1, volume: 300},
-        {id: 2, title: `сервер сопряжения`, count: 3, volume: 600},
-        {id: 3, title: `сервер ситуационного видеонаблюдения`, count: 1, volume: 300},
-        {id: 4, title: `сервер другой`, count: 3, volume: 7680}
-      ], 
-      // список дополнительных серверов вносящих свои требования к объёму схд
-      sumItUpAnswer: 0, //объём всех серверов вместе взятых, ГБ
-
-
-
-      started: false,
-      volume3: 0, //Полезная ёмкость с учетом резерва
-      volume2: 0, //Объём с резервным копированием
-      volume1: 0, //Требуемый объём СХД с учётом перевода TiB в Тбайт
-      volume: 0, //Требуемый объём для хранения данных
-      mBR1: 0, //Параметр битрета для непосредственного расчёта(используется исключительно в формуле)
-      mBR: "...", //Параметр битрейта для текстового поля (для передачи данных из V-model при ручном режиме или при получении битрейта от видеонаблюдения)
-      wats: "", //Мощность, требуемая для рассчёта времени работы на резервном питании
-      users: "...", // Число устройств
-      usli: 0, //Кол-во узлов
-      days: "...", //Дни для рассчёта
-      capacity: "...", //Объём дисков при нестандартных узлах
-      discs: "...", //Кол-во дисков при нестандартных узлах
-      standart: false, //Параметр, отвечающий за стандартные/нестандартные узлы(по умолчанию стандартные узлы)
-      converg: false, //Параметр, отвечающий за гиперконвергентную/негиперконвергентную систему(по умолчанию негиперконвергентная)
-      dialog: false, //Параметр, отвечающий за отображение видеонаблюдения
-      dialog1: false,
-      dialog2: false,
-      video: false, //Параметр, отвечающий за использование битрейта с видеонаблюдения
-      rule: [(value) => !!value || "Необходимо заполнить это поле."], //Правила для текстовых полей
-      options: [
-        { name: "Локальная вычислительная сеть", value: "local" },
-        { name: "Системы телефонии", value: "phone" },
-        { name: "Система видеонаблюдения", value: "video" },
-        { name: "Ручной режим", value: "user" },
-      ], //Выбор режимов
-
-      convergChecked: false,
-    };
+  computed:{
+    ...mapGetters('myShd',
+    [
+      'getMBr',
+      'getCapacity',
+      'getDays',
+      'getUsers',
+      'getDiscs',
+      'getConvServParams',
+      'getOptions',
+      'getRule',
+      'getVideoDialog',
+      'getConvergDialog',
+      'getStoresDialog',
+      'getConvergOpt',
+      'getStandartOpt',
+      'getSnackbar',
+      'getTimeout',
+      'getErrorText',
+      'getMainVolume',
+      'getMainVolumeTbait',
+      'getRezervVolume',
+      'getUsefullVolume',
+      'getUsliShd',
+      'getStartedShd'
+  ] 
+    ),
+        users:{
+            get() {
+                console.log('getUsers', this.getUsers)
+                return this.getUsers
+            },
+            async set(value){
+                console.log('setUsers', value)
+                await this.setUsersAct(value)
+            }
+        },
+        capacity:{
+            get() {
+                console.log('getCapacity', this.getCapacity)
+                return this.getCapacity
+            },
+            async set(value){
+                console.log('setCapacity', value)
+                await this.setCapacityAct(value)
+            }
+        },
+        days:{
+          get() {
+                console.log('getDays', this.getDays)
+                return this.getDays
+            },
+          async set(value){
+                console.log('setDays', value)
+                await this.setDaysAct(value)
+            }
+        },
+        discs:{
+            get() {
+                console.log('getDiscs', this.getDiscs)
+                return this.getDiscs
+            },
+            async set(value){
+                console.log('setDiscs', value)
+                await this.setDiscsAct(value)
+            }
+        },
+        MBr:{
+            get() {
+                console.log('getMBr', this.getMBr)
+                return this.getMBr
+            },
+            async set(value){
+                console.log('setMBr', value)
+                await this.setMBrAct(value)
+            }
+        },
+        converg:{
+          get(){
+            console.log('getConverg',this.getConvergOpt)
+            return this.getConvergOpt
+          },
+          async set(value){
+            console.log('setConverg', value)
+            await this.setConvergOptAct(value)
+          }
+        },
+        standart:{
+          get(){
+            console.log('getStandart',this.getStandartOpt)
+            return this.getStandartOpt
+          },
+          async set(value){
+            console.log('setStandart', value)
+            await this.setStandartOptAct(value)
+          }
+        },
+        snackbar:{
+          get(){
+            console.log('getSnackbar',this.getSnackbar)
+            return this.getSnackbar
+          },
+          async set(value){
+            console.log('setSnackbar', value)
+            await this.setSnackbarAct(value)
+          }
+        },
+        started:{
+          get(){
+            console.log('getStarted',this.getStartedShd)
+            return this.getStartedShd
+          },
+          async set(value){
+            console.log('setStarted', value)
+            await this.setShdStartedAct(value)
+          }
+        },
+        convergDialog:{
+          get(){
+            console.log('getConvergDialog', this.getConvergDialog)
+            return this.getConvergDialog
+          },
+          async set(){
+            console.log('setConvergDialog')
+            await this.setConvergDialogAct()
+          }
+        },
+        storeDialog:{
+          get(){
+            console.log('getStoreDialog', this.getStoresDialog)
+            return this.getStoresDialog
+          },
+          async set(){
+            console.log('setStoreDialog')
+            await this.setStoresDialogAct()
+          }
+        },
+        videoDialog:{
+          get(){
+            console.log('getVideoDialog', this.getVideoDialog)
+            return this.getVideoDialog
+          },
+          async set(){
+            console.log('setVideoDialogAct')
+            await this.setVideoDialogAct()
+          }
+        },
   },
   methods: {
-    
-    // изменение списка дополнительных серверов для гиперконвергента
-    extendConvServParamList(){
-      // console.log('hello, making a new member')
-      // console.log(this.convServParam)
-      // console.log(this.convServParam.length)
-      // console.log(this.convServParam[this.convServParam.length-1])
-      this.convServParam.push({
-        id: this.convServParam.length, 
-        title: `type idk`, 
-        count: 1, 
-        volume: 0,
-      }) 
-      
-      // console.log(this.convServParam)
-    },
-    deleteItem: function (item, index) {
-      if(this.convServParam[index] === item) { 
-      // The template passes index as the second parameter to avoid indexOf, 
-      // it will be better for the performance especially for one large array
-      // (because indexOf actually loop the array to do the match)
-        this.convServParam.splice(index, 1)
-        // console.log(this.convServParam)
-      } else {
-        let found = this.convServParam.indexOf(item)
-        this.convServParam.splice(found, 1)
-      }
-    },
-    
-    sumItUp(){
-      this.sumItUpAnswer = 0
-      this.convServParam.forEach( servParam => {
-        this.sumItUpAnswer += (servParam.count*servParam.volume)
-      })
-      console.log( `${this.sumItUpAnswer} ГБ      ${this.sumItUpAnswer/1024} ТБ`)
-      return this.sumItUpAnswer
-    }, // суммарный объём всех серверов в гиперконвергентной вкладке
-    
+    ...mapActions('myShd',
+    [
+      'setMBrAct',
+      'setCapacityAct',
+      'setDaysAct',
+      'setUsersAct',
+      'setDiscsAct',
+      'extendConvServParamListAct',
+      'deleteItemAct',
+      'setVideoDialogAct',
+      'setConvergDialogAct',
+      'setStoresDialogAct',
+      'setConvergOptAct',
+      'setStandartOptAct',
+      'setSnackbarAct',
+      'StartShdAct',
+      'setShdStartedAct',
+      'setMbrVideoAct'
+    ]
+    ),    
 
-
-
-    
-    
-    getMbrVideo() {
-      // console.log("cams_Mbr", (this.mBr = localStorage.getItem("Bitrate")));
-      this.video = true;
-      return (this.mBR = localStorage.getItem("Bitrate"));
-    }, //Ф-ция, отвечающая за присвоение битрейта от видеокамер
-
-    getVideo() {
-      if (this.dialog === false) {
-        this.dialog = true;
-        this.convergChecked = true
-      } else {
-        this.dialog = false;
-      }
-    }, //Ф-ция, отвечающая за вкладку с видеонаблюдением
-
-    getConverg(){
-        if (this.dialog1 === false) {
-        this.dialog1 = true;
-        this.convergChecked = true
-      } else {
-        this.dialog1 = false;
-      }
-    },
-
-    getStores(){
-        if (this.dialog2 === false) {
-        this.dialog2 = true;
-        this.standart = true
-      } else {
-        this.dialog2 = false;
-      }
-    },
-
-    start() {
-      this.started = true;
-      this.getMbr();
-      // console.log(this.mBR1);
-      this.Volume();
-      if(this.converg)
-        this.Converg();
-
-      this.Standart();
-      
-
-
-      
-    }, //Старт
-
-    Power() {
-      if (this.converg) {
-        //Мощность при гиперконвергентной системе
-        this.wats = (this.usli + 2) * 1000;
-        // console.log(this.wats);
-        localStorage.setItem("wats", null);
-        localStorage.setItem("wats", this.wats);
-        this.$emit("Power", this.wats);
-      } else {
-        //Мощность при негиперконвергентной системе
-        this.wats = (this.usli + 2) * 700;
-        // console.log(this.wats);
-        localStorage.setItem("wats", null);
-        localStorage.setItem("wats", this.wats);
-        this.$emit("Power", this.wats);
-      }
-    }, //Ф-ция, передающая параметр мощности в зависимости от типа системы
-
-    Volume() {
-      this.volume = this.mBR1 * +this.users * +this.days * 3600 * 24;
-      // console.log("volume", this.volume);
-
-      this.volume = Math.ceil(this.volume / 8000000);
-      // console.log("Рассчитанный объём в TiB:   ", this.volume);
-
-      this.volume1 = Math.ceil(this.volume / 0.85 / 0.9095);
-      // console.log("Рассчитанный объём, переведённый в Tбайт:   ", this.volume1);
-    }, //Ф-ция, рассчитывающая объём СХД без учёта резерва
-
-    Converg() {
-        let server_volume =0
-        let disc_group =0
-        if(this.convergChecked){
-
-        server_volume = this.sumItUp()/1024
-        // console.log('объём сервера (ТБ)', server_volume)
-        
-        disc_group = Math.ceil(server_volume*2 / 0.85);
-        this.volume2 = Math.ceil(disc_group+2*this.volume1)
-        // console.log('Объём с резервным копированием', this.volume2)
-
-        this.volume3= Math.ceil(2*this.volume1 + disc_group)/0.8
-        // console.log(
-        //   "С учетом резерва требуемая от СХД полезная ёмкость",
-        //   this.volume3,
-        //   " Тбайт"
-        // )
-        }
-        else{
-            this.volume2= Math.ceil(this.volume1*2)
-            // console.log('Объём с резервным копированием   ', this.volume2)
-            this.volume3 = Math.ceil(this.volume2/0.7)
-            // console.log('учетом резерва требуемая от СХД полезная ёмкость', this.volume3)
-        }
-    }, //Ф-ция, учитывающая объём СХД с резервом (при гиперконвергентной системе)
-
-    getMbr() {
-      this.mBR1 = 0;
-      if (this.options.value == "local") {
-        //Локальные вычислительные сети
-        this.mBR1 = 5;
-      }
-      if (this.options.value == "phone") {
-        //Системы телефонии
-        this.mBR1 = 0.1;
-      }
-      if (this.options.value == "video") {
-        //Система видеонаблюденя
-        if (this.video) {
-          this.mBR1 = this.mBR;
-        } else {
-          this.mBR1 = 8;
-        }
-      }
-      if (this.options.value == "user") {
-        //Ручной режим
-        this.mBR1 += this.mBR;
-      }
-    }, //Ф-ция, присваивающая значение битрейта при разных режимах
-
-    Standart() {
-      if (!this.standart){
-        // стандартные узлы
-        if (this.converg){
-          // гиперконвергентные системы
-          this.usli = Math.ceil(this.volume3 / 7 / 4);
-        } else {
-          // обычные системы
-          this.usli = Math.ceil(this.volume1 / 15 / 8);
-        }
-      } else{
-        // свои узлы
-        if (this.converg){ 
-          // гиперконвергентные системы
-          this.usli = Math.ceil(this.volume3 / this.discs / this.capacity);
-        } else {
-          // здесь не важно, какой тип системы, ведь оно учитывалось в объёме
-          this.usli = Math.ceil(this.volume1 / this.discs / this.capacity);
-        }
-
-      }
-      console.log(this.usli);
-      console.log(!!this.usli);
-      if (!this.usli){
-        this.snackbar = true
-        this.started = false
-        return
-      }
-      localStorage.setItem("usli", this.usli);
-      localStorage.setItem("usli", this.usli + 2);
-      this.$emit("Usli", this.usli);
-      this.Power()
-      // console.log('emitting Usli')
-      
-
-    }, //Ф-ция, рассчитывающа число узлов для различных типов систем и узлов
   },
 };
 </script>
