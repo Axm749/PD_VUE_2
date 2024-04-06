@@ -8,10 +8,9 @@ import storeVideo from './modules/storeVideo'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    
     modules:{
-        mySHD: storeSHD,
-        myPower: storePower,
-        myVideo: storeVideo,
+        myShd:storeSHD,
+        myPower:storePower,
+        myVideo:storeVideo,
     }
 })

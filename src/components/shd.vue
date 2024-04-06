@@ -352,7 +352,7 @@ export default {
     video1,
   },
   computed:{
-    ...mapGetters('mySHD',
+    ...mapGetters('myShd',
     [
       'getMBr',
       'getCapacity',
@@ -497,10 +497,20 @@ export default {
             console.log('setStoreDialog')
             await this.setStoresDialogAct()
           }
-        }
+        },
+        videoDialog:{
+          get(){
+            console.log('getVideoDialog', this.getVideoDialog)
+            return this.getVideoDialog
+          },
+          async set(){
+            console.log('setVideoDialogAct')
+            await this.setVideoDialogAct()
+          }
+        },
   },
   methods: {
-    ...mapActions('mySHD',
+    ...mapActions('myShd',
     [
       'setMBrAct',
       'setCapacityAct',

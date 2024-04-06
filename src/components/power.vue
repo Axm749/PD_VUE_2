@@ -103,7 +103,7 @@ export default {
         ...mapGetters('myPower', 
         [
             'getVoultage', 
-            'getCapacity', 
+            'getBatteryCapacity', 
             'getBatteries', 
             'getKpd',
             'getPower',
@@ -128,12 +128,12 @@ export default {
         },
         capacity:{
             get() {
-                console.log('get', this.getCapacity)
-                return this.getCapacity
+                console.log('get', this.getBatteryCapacity)
+                return this.getBatteryCapacity
             },
             async set(value){
                 console.log('set', value)
-                await this.setCapacityAct(value)
+                await this.setBatteryCapacityAct(value)
             }
         },
         batteries:{
@@ -203,12 +203,13 @@ export default {
                 await this.setSnackbarAct(value)
             }
         },
+        
     },
   methods: {
     ...mapActions('myPower', 
         [
             'setVoultageAct',
-            'setCapacityAct',
+            'setBatteryCapacityAct',
             'setBatteriesAct',
             'setKpdAct',
             'setPowerAct',

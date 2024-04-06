@@ -1,4 +1,5 @@
 'use-strict'
+
 function sumItUp(state){
     state.sumItUpAnswer = 0
     state.convServParam.forEach( servParam => {
@@ -6,7 +7,8 @@ function sumItUp(state){
     })
     console.log( `${state.sumItUpAnswer} ГБ      ${state.sumItUpAnswer/1024} ТБ`)
     return state.sumItUpAnswer
-  }
+}
+
 export default{
     namespaced: true,
     state:{
@@ -89,7 +91,7 @@ export default{
               volume: 0,
             }) 
             // console.log(this.convServParam)
-          },
+        },
         deleteItemMut:(state, item, index)=> {
             if(state.convServParam[index] === item) { 
             // The template passes index as the second parameter to avoid indexOf, 
@@ -101,7 +103,7 @@ export default{
               let found = state.convServParam.indexOf(item)
               state.convServParam.splice(found, 1)
             }
-          },
+        },
          // суммарный объём всех серверов в гиперконвергентной вкладке
         setVideoDialogMut:(state)=> {
             if (state.dialogVideo === false) {
@@ -109,7 +111,8 @@ export default{
             } else {
                 state.dialogVideo = false;
             }
-          }, //Ф-ция, отвечающая за вкладку с видеонаблюдением
+        }, //Ф-ция, отвечающая за вкладку с видеонаблюдением
+         //Ф-ция, отвечающая за вкладку с видеонаблюдением
         setConvergDialogMut:(state)=>{
             if (state.dialogConverg === false) {
                 state.dialogConverg = true;
@@ -143,6 +146,7 @@ export default{
               //Система видеонаблюденя
               console.log('Video')
               if (state.video) {
+                console.log('video< mBr',state.MBr)
                 return state.mBR1 = state.MBr;
               } else {
                 return state.mBR1 = 8;
@@ -154,7 +158,7 @@ export default{
               console.log('User')
               return state.mBR1 += state.MBr;
             }
-          }, //Ф-ция, присваивающая значение битрейта при разных режимах
+        }, //Ф-ция, присваивающая значение битрейта при разных режимах
         getVolume:(state)=> {
             state.MainVolume = state.mBR1 * +state.users * +state.days * 3600 * 24;
             // console.log("volume", this.volume);
@@ -168,7 +172,7 @@ export default{
             console.log('MainVolumeTbait', state.MainVolumeTbait)
 
             // console.log("Рассчитанный объём, переведённый в Tбайт:   ", this.volume1);
-          }, //Ф-ция, рассчитывающая объём СХД без учёта резерва
+        }, //Ф-ция, рассчитывающая объём СХД без учёта резерва
         getConverg:(state)=> {
             if(state.converg){
             let server_volume =0
@@ -200,8 +204,9 @@ export default{
         setMbrVideoMut:(state)=> {
             // console.log("cams_Mbr", (this.mBr = localStorage.getItem("Bitrate")));
             state.video = true;
+            console.log('local Mbr',+localStorage.getItem("Bitrate"))
             return (state.MBr = +localStorage.getItem("Bitrate"));
-          }, //Ф-ция, отвечающая за присвоение битрейта от видеокамер
+        }, //Ф-ция, отвечающая за присвоение битрейта от видеокамер
         getStandart:(state) =>{
             if (!state.standart){
               // стандартные узлы
@@ -283,7 +288,6 @@ export default{
             commit("setVideoDialogMut")
         },
         setConvergDialogAct:({commit})=>{
-            console.log('here')
             commit("setConvergDialogMut")
         },
         setStoresDialogAct:({commit})=>{
@@ -391,6 +395,9 @@ export default{
         },
         getUsliShd:(state)=>{
             return state.usli
-        }
+        },
+        getWats:(state)=>{
+            return state.wats
+        },
     },
 }

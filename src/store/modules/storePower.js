@@ -6,7 +6,7 @@ export default{
     namespaced: true,
     state:{
         voultage: '...',
-        capacity: '...',
+        batteryCapacity: '...',
         batteries: '...',
         kpd: '...',
         power: '...',
@@ -22,8 +22,8 @@ export default{
         setVoultageMut:(state, data) =>{
             state.voultage = data
         },
-        setCapacityMut:(state, data) =>{
-            state.capacity = data
+        setBatteryCapacityMut:(state, data) =>{
+            state.batteryCapacity = data
         },
         setBatteriesMut:(state, data) =>{
             state.batteries = data
@@ -37,7 +37,13 @@ export default{
         startPowerMut:(state)=> {
             if(!state.self){state.power = storeSHD.state.wats}
             state.started =true
-            state.TimeWork = (state.voultage*state.capacity*state.batteries*state.kpd*0.85/state.power).toFixed(2)
+            if(state.self){
+            state.TimeWork = (
+                state.voultage*
+                state.batteryCapacity*
+                state.batteries*
+                state.kpd*0.85/
+            state.power).toFixed(2)
             console.log('sdadasd',state.TimeWork)
             console.log(state.snackbar)
             console.log('wats in shd',storeSHD.state.wats)
@@ -46,6 +52,21 @@ export default{
                 state.started = false;
                 return;
               }
+            }else{
+                state.TimeWork = (
+                    state.voultage*
+                    state.batteryCapacity*
+                    state.batteries*
+                    state.kpd*0.85/
+                state.power).toFixed(2)
+                console.log('sdadasd',state.TimeWork)
+                console.log(state.snackbar)
+                if (!state.TimeWork || isNaN(state.TimeWork)) {
+                    state.snackbar = true;
+                    state.started = false;
+                    return;
+                  }
+            }
         },
         setSelfMut:(state,data)=>{
             state.self = data
@@ -61,8 +82,8 @@ export default{
         setVoultageAct:({commit}, value) =>{
             commit("setVoultageMut", value)
         },
-        setCapacityAct:({commit}, value) =>{
-            commit("setCapacityMut", value)
+        setBatteryCapacityAct:({commit}, value) =>{
+            commit("setBatteryCapacityMut", value)
         },
         setBatteriesAct:({commit}, value) =>{
             commit("setBatteriesMut", value)
@@ -90,8 +111,8 @@ export default{
         getVoultage:(state)=>{
             return state.voultage
         },
-        getCapacity:(state)=>{
-            return state.capacity
+        getBatteryCapacity:(state)=>{
+            return state.batteryCapacity
         },
         getBatteries:(state)=>{
             return state.batteries
@@ -122,6 +143,7 @@ export default{
         },
         getErrorText:(state)=>{
             return state.errorText
-        }
+        },
+        
     },
 }
