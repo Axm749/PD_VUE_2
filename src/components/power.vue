@@ -45,6 +45,9 @@
         label="КПД преобразователя в долях (0,8 - 1,0)"
         :rules="getRules"
         hide-details="auto"
+        max=1
+        min=0.8
+        oninput="if(Number(this.value) > Number(this.max)) this.value = this.max"
         v-model.number="kpd"
         class="mt-5"
       />
@@ -96,6 +99,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "power_vue",
   computed:{
+        ...mapGetters('mySHD',['getWats']),
         ...mapGetters('myPower', 
         [
             'getVoultage', 
@@ -154,8 +158,15 @@ export default {
         },
         power:{
             get() {
+              if(this.getSelf){
                 console.log('get', this.getPower)
                 return this.getPower
+              }
+              else{
+                console.log('get', this.getWats)
+                return this.getWats
+              }
+
             },
             async set(value){
                 console.log('set', value)

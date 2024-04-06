@@ -21,6 +21,7 @@ export default{
         RezervVolume:0,
         UsefulVolume:0,
         usli: 0, //Кол-во узлов
+        wats:'...',
         shdStarted: false,
         convServParam: [
             {id: 0, title: `сервер управления`, count: 1, volume: 300},
@@ -75,6 +76,9 @@ export default{
         },
         setShdStartedMut:(state, data)=>{
             state.shdStarted = data
+        },
+        setWatsMut:(state, data)=>{
+            state.wats = data
         },
 
         extendConvServParamListMut:(state)=>{
@@ -193,10 +197,10 @@ export default{
             }
         }
         }, //Ф-ция, учитывающая объём СХД с резервом (при гиперконвергентной системе)
-        getMbrVideo:(state)=> {
+        setMbrVideoMut:(state)=> {
             // console.log("cams_Mbr", (this.mBr = localStorage.getItem("Bitrate")));
             state.video = true;
-            return (state.mBR = localStorage.getItem("Bitrate"));
+            return (state.MBr = +localStorage.getItem("Bitrate"));
           }, //Ф-ция, отвечающая за присвоение битрейта от видеокамер
         getStandart:(state) =>{
             if (!state.standart){
@@ -226,6 +230,11 @@ export default{
                 // здесь не важно, какой тип системы, ведь оно учитывалось в объёме
                 state.usli = Math.ceil(state.MainVolumeTbait / state.discs / state.capacity);
               }
+              if (!state.usli || isNaN(state.usli)) {
+                state.snackbar = true;
+                state.started = false;
+                return;
+              }
       
             }
             console.log(state.usli);
@@ -235,7 +244,18 @@ export default{
               state.started = false
               return
             }
-          }, //Ф-ция, рассчитывающа число узлов для различных типов систем и узлов
+        }, //Ф-ция, рассчитывающа число узлов для различных типов систем и узлов
+        getShdPower:(state)=> {
+            if (state.converg) {
+              //Мощность при гиперконвергентной системе
+              state.wats = (state.usli + 2) * 1000;
+              // console.log(this.wats);
+            } else {
+              //Мощность при негиперконвергентной системе
+              state.wats = (state.usli + 2) * 700;
+              // console.log(this.wats);
+            }
+        }, //Ф-ция, передающая параметр мощности в зависимости от типа системы
     },
     actions:{
         setMBrAct:({commit}, value) =>{
@@ -252,6 +272,9 @@ export default{
         },
         setDiscsAct:({commit}, value) =>{
             commit("setDiscsMut", value)
+        },
+        setWatsAct:({commit}, value)=>{
+            commit("setWatsMut", value)
         },
         setShdStartedAct:({commit}, value)=>{
             commit("setShdStartedMut", value)
@@ -276,7 +299,7 @@ export default{
             commit('setSnackbarMut', value)
         },
         setMbrVideoAct:({commit})=>{
-            commit("getMbrVideo")
+            commit("setMbrVideoMut")
         },
         extendConvServParamListAct:({commit})=>{
             commit("extendConvServParamListMut")
@@ -289,6 +312,7 @@ export default{
             commit("getVolume")
             commit("getConverg")
             commit("getStandart")
+            commit("getShdPower")
         },
     },
     getters:{
@@ -311,6 +335,10 @@ export default{
         getDiscs:(state)=>{
             console.log(state.discs)
             return state.discs
+        },
+        getWats:(state)=>{
+            console.log(state.wats)
+            return state.wats
         },
         getConvServParams:(state) =>{
             return state.convServParam

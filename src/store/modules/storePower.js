@@ -1,5 +1,7 @@
 'use-strict'
 
+import storeSHD from "./storeSHD"
+
 export default{
     namespaced: true,
     state:{
@@ -33,11 +35,13 @@ export default{
             state.power = data
         },
         startPowerMut:(state)=> {
+            if(!state.self){state.power = storeSHD.state.wats}
             state.started =true
             state.TimeWork = (state.voultage*state.capacity*state.batteries*state.kpd*0.85/state.power).toFixed(2)
             console.log('sdadasd',state.TimeWork)
             console.log(state.snackbar)
-            if (!state.TimeWork || isNaN(state.TimeWork)) {
+            console.log('wats in shd',storeSHD.state.wats)
+            if (!state.TimeWork || isNaN(state.TimeWork)|| state.TimeWork == Infinity) {
                 state.snackbar = true;
                 state.started = false;
                 return;

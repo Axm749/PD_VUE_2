@@ -253,7 +253,7 @@
       <!-- доступ к вычислениям видеонаблюдения -->
       <template v-if="getOptions.value == 'video'">
         <v-dialog
-          v-model="getVideoDialog"
+          v-model="videoDialog"
           novalidate
           width="auto"
           aria-hidden="true"
@@ -478,6 +478,16 @@ export default {
             await this.setConvergDialogAct()
           }
         },
+        videoDialog:{
+          get(){
+            console.log('getVideoDialog', this.getVideoDialog)
+            return this.getVideoDialog
+          },
+          async set(){
+            console.log('setConvergDialog')
+            await this.setVideoDialogAct()
+          }
+        },
         storeDialog:{
           get(){
             console.log('getStoreDialog', this.getStoresDialog)
@@ -507,27 +517,9 @@ export default {
       'setSnackbarAct',
       'StartShdAct',
       'setShdStartedAct',
-      'setMbrVideoAct'
+      'setMbrVideoAct',
     ]
     ),    
-
-    Power() {
-      if (this.converg) {
-        //Мощность при гиперконвергентной системе
-        this.wats = (this.usli + 2) * 1000;
-        // console.log(this.wats);
-        localStorage.setItem("wats", null);
-        localStorage.setItem("wats", this.wats);
-        this.$emit("Power", this.wats);
-      } else {
-        //Мощность при негиперконвергентной системе
-        this.wats = (this.usli + 2) * 700;
-        // console.log(this.wats);
-        localStorage.setItem("wats", null);
-        localStorage.setItem("wats", this.wats);
-        this.$emit("Power", this.wats);
-      }
-    }, //Ф-ция, передающая параметр мощности в зависимости от типа системы
 
   },
 };
