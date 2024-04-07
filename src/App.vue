@@ -5,7 +5,7 @@
       
       <!-- настройки -->
       <div 
-        :class="noMargins === true ? 'ma-0' : 'ma-5 module_bg'"
+        :class="noMargins === true ? 'ma-0' : 'ma-2 module_bg'"
       >
         <v-expansion-panels
             accordion
@@ -56,10 +56,10 @@
       <!-- основной вид -->
       <div 
         v-if="!irregularView"
-        :class="noMargins === true ? 'ma-0' : 'ma-5'"
+        :class="noMargins === true ? 'ma-0' : 'ma-2'"
       >
         <div 
-          :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
+          :class="noMargins === true ? 'mt-2' : 'mt-2 module_bg'"
         >
           <shd
             @Power="getpower"
@@ -68,7 +68,7 @@
         </div>
         
         <div 
-          :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
+          :class="noMargins === true ? 'mt-2' : 'mt-2 module_bg'"
         >
           <power
             ref="npower"
@@ -76,7 +76,7 @@
         </div>
         
         <div 
-          :class="noMargins === true ? 'mt-5' : 'mt-5 module_bg'"
+          :class="noMargins === true ? 'mt-2' : 'mt-2 module_bg'"
         >
           <cooling
             ref="nusli"
@@ -87,7 +87,7 @@
       <!-- альтернативный вид -->
       <div 
         v-if="irregularView"
-        :class="noMargins === true ? 'ma-0 mt-5' : 'ma-5 module_bg'"
+        :class="noMargins === true ? 'ma-0 mt-5' : 'ma-2 module_bg'"
       >
         <v-expansion-panels
           multiple
@@ -196,6 +196,8 @@ export default {
         this.irregularView = false
       }
 
+      document.documentElement.style.setProperty("--main-background-color", "green");
+
 
     }
 };
@@ -205,9 +207,9 @@ export default {
 
 body{
   margin: 0;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
     /* background-size: 200% 200%; */
     /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
     /* background-image: linear-gradient( 120deg, #1288ab, #e542f4); */
@@ -217,18 +219,32 @@ body{
 }
 
 .body_light{
-  background-image: linear-gradient( 0deg, #2ebf91, #4286f4);
-  /* background-image: linear-gradient( 120deg, #33691E, #4DD0E1); */
+  /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
+  background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;
 }
 
 .body_dark{
-  background-image: linear-gradient( 120deg, #691e1e, #955e20);
+  /* background-image: linear-gradient( 120deg, #1f0000, #1e0013); */
+  background-image: linear-gradient( 120deg, #000000, #370000);
+  /* color: #111;
+  background-color: #000000; */
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;
+}
+
+.theme--dark.v-card{
+  /* background-color: #000000; */
+  background-image: linear-gradient( 120deg, #000000, #370000);
+  background-size: 200% 200%;
+  animation: bg 5s ease infinite;
+}
+
+.theme--dark.v-expansion-panels .v-expansion-panel{
+  background-color: #000;
 }
 
 
@@ -254,10 +270,7 @@ body{
     background-color:rgb(245, 244, 248);
 }
 
-.theme--light.v-application {
-    background: none;
-    color: rgba(0, 0, 0, 0.87);
-}
+
 
 input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 -webkit-appearance: none;
@@ -265,8 +278,8 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 
 .module_bg{
   background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 0px;
+  padding: 3px;
   margin-top: 20px;
   /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.127); */
   /* margin: 5px; */
