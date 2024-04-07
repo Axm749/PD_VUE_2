@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="pa-5">
+    <v-card class="pa-5" tile>
       <h1>Электропитание</h1>
 
       <v-text-field
@@ -99,7 +99,10 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "power_vue",
   computed:{
-        ...mapGetters('mySHD',['getWats']),
+        ...mapGetters('mySHD',
+        [
+          'getWats'
+        ]),
         ...mapGetters('myPower', 
         [
             'getVoultage', 
@@ -203,6 +206,17 @@ export default {
                 await this.setSnackbarAct(value)
             }
         },
+
+        wats:{
+          get(){
+            // let value = this.getWats
+            // await this.setSelf(value)
+            // return this.getSelf
+            return this.getWats
+            
+          }
+
+        }
         
     },
   methods: {

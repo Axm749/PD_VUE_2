@@ -4,6 +4,7 @@
         <div class="module_bg">
             <v-card
                 class="pa-5"
+                tile
             >
                     
                 <h1>Видео (битрейт и PPM)</h1>

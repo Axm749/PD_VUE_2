@@ -6,6 +6,7 @@
     <!-- ввод требований -->
     <v-card 
       class="pa-5" 
+      tile
     >
       <h1>Система хранения данных</h1>
 
@@ -255,7 +256,7 @@
         <v-dialog
           v-model="videoDialog"
           novalidate
-          width="auto"
+          width="80%"
           aria-hidden="true"
           class="mt-5"
         >
@@ -272,7 +273,9 @@
             </v-btn>
           </template>
 
-          <video1 @cam_bitrate="setMbrVideoAct" />
+          <video1 
+            @cam_bitrate="setMbrVideoAct" 
+          />
 
         </v-dialog>
       </template>

@@ -223,10 +223,13 @@ body{
 }
 
 .body_dark{
-  background-image: linear-gradient( 120deg, #373374, #003e4f);
+  /* background-image: linear-gradient( 120deg, #292929, #242424);
   height: 100%;
   background-size: 200% 200%;
-  animation: bg 5s ease infinite;
+  animation: bg 5s ease infinite; */
+
+  background-color: rgb(46, 46, 46);
+  height: 100%;
 }
 
 
@@ -252,11 +255,6 @@ body{
     background-color:rgb(245, 244, 248);
 }
 
-.theme--light.v-application {
-    background: none;
-    color: rgba(0, 0, 0, 0.87);
-}
-
 input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 -webkit-appearance: none;
 }
@@ -264,7 +262,7 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 .module_bg{
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 0px;
-  padding: 2px;
+  padding: 3px;
   margin-top: 20px;
   /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.127); */
   /* margin: 5px; */

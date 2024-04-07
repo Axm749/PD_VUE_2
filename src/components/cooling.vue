@@ -1,6 +1,6 @@
 <template>
     <div>
-    <v-card class="pa-5">
+    <v-card class="pa-5" tile>
         <h1>Система охлаждения</h1>
         
         <v-checkbox 
@@ -108,7 +108,7 @@
             outlined
             required
             clearable
-            :label="WatOpt==true ? condition_label1: condition_label2"
+            :label="condition_label1"
             :rules="rule"
             hide-details="auto"
             v-model.number="condition"
@@ -233,7 +233,7 @@
                     // console.log('komutat_dost', this.komutat_dost)
                     // console.log('komutat_opt', this.komutat_opt)
                     // console.log('Condition', this.condition)
-                    this.final_result= Math.ceil(result/(this.condition/3.41))
+                    this.final_result= Math.ceil(result/this.condition)
                 }else{
 
 
