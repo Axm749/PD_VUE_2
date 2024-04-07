@@ -26,7 +26,7 @@ export default new Vuetify({
             
           },
           dark:{
-            primary: colors.red.darken2, // #E53935
+            primary: colors.red.darken4, // #E53935
             secondary: colors.red.darken1, // #FFCDD2
             accent: colors.red.accent1, // #3F51B5
             error: colors.grey.darken2,

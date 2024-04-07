@@ -99,7 +99,7 @@
           >
             <v-expansion-panel-header><h2> СХД </h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n2'">
                 <shd
                 @Power="getpower"
                 @Usli="getUsli"
@@ -112,7 +112,7 @@
           <v-expansion-panel eager>
             <v-expansion-panel-header><h2>электропитание</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n2'">
                 <power
                   ref="npower"
                 />
@@ -123,7 +123,7 @@
           <v-expansion-panel eager>
             <v-expansion-panel-header><h2>охлаждение</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n2'">
                 <cooling
                   ref="nusli"
                 />
@@ -229,8 +229,8 @@ body{
 .body_dark{
   /* background-image: linear-gradient( 120deg, #1f0000, #1e0013); */
   background-image: linear-gradient( 120deg, #000000, #370000);
-  /* color: #111;
-  background-color: #000000; */
+  color: #111;
+  /* background-color: #000000; */
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;
@@ -286,7 +286,7 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
 }
 
 .inCardTab{
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(0, 0, 0, 0.03);
   border-radius: 5px;
   padding: 5px;
 }

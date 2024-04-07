@@ -6,6 +6,7 @@
     <!-- ввод требований -->
     <v-card 
       class="pa-5" 
+      tile
     >
       <h1>Система хранения данных</h1>
 
@@ -118,7 +119,7 @@
         <v-dialog
           v-model="dialog1"
           transition="dialog-bottom-transition"
-          width="80%"
+          width="90%"
           aria-hidden="true"
         >
           <template v-slot:activator="{ props1 }">
@@ -138,10 +139,10 @@
           <div class="module_bg">
             <v-card
               outlined
-              class="pa-5"
+              class="pa-2"
             >
               
-              <h1>Доп. сервера</h1>
+              <h1 class="pt-2 text-center">Доп. сервера</h1>
               
 
               <div 
@@ -200,7 +201,8 @@
               <v-btn
                 color="primary"
                 @click="extendConvServParamList"
-                class="ma-5"
+                class="mt-5"
+                width="100%"
               >добавить</v-btn>
 
               <!-- <v-btn
