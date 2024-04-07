@@ -99,7 +99,7 @@
           >
             <v-expansion-panel-header><h2> СХД </h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div :class="noMargins=== true ? 'module_bg' : 'mx-n2'">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
                 <shd
                 @Power="getpower"
                 @Usli="getUsli"
@@ -112,7 +112,7 @@
           <v-expansion-panel eager>
             <v-expansion-panel-header><h2>электропитание</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div :class="noMargins=== true ? 'module_bg' : 'mx-n2'">
+              <div :class="noMargins=== true ? 'module_bg' : 'mx-n5'">
                 <power
                   ref="npower"
                 />
@@ -123,7 +123,7 @@
           <v-expansion-panel eager>
             <v-expansion-panel-header><h2>охлаждение</h2></v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div :class="noMargins=== true ? 'module_bg' : 'mx-n2'">
+              <div :class="noMargins=== true ? 'module_bg mx-n2' : 'mx-n5'">
                 <cooling
                   ref="nusli"
                 />
@@ -237,15 +237,16 @@ body{
 }
 
 .theme--dark.v-card{
-  /* background-color: #000000; */
-  background-image: linear-gradient( 120deg, #000000, #370000);
+  background-color: #000000;
+  /* background-image: linear-gradient( 120deg, #000000, #370000);
   background-size: 200% 200%;
-  animation: bg 5s ease infinite;
+  animation: bg 5s ease infinite; */
 }
 
 .theme--dark.v-expansion-panels .v-expansion-panel{
   background-color: #000;
 }
+
 
 
 @keyframes bg {
