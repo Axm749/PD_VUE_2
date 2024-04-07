@@ -157,6 +157,7 @@ export default {
     shd,
     power,
     cooling,
+    
   },
 
   data: () => ({
