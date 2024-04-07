@@ -192,7 +192,7 @@
                 <v-btn 
                     @click="resetZone" 
                     color="primary" 
-                    class="mt-5"
+                    class="mt-5 ml-5"
                 >Сбросить зоны</v-btn>
 
             </v-card>
