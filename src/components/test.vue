@@ -411,7 +411,7 @@
           id: this.convServParam.length, 
           title: `type idk`, 
           count: 1, 
-          volume: 0,
+          volume: 0, 
         }) 
         
         // console.log(this.convServParam)

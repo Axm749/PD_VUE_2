@@ -396,8 +396,8 @@ export default{
         getUsliShd:(state)=>{
             return state.usli
         },
-        getWats:(state)=>{
-            return state.wats
-        },
+        // getWats:(state)=>{
+        //     return state.wats
+        // },
     },
 }

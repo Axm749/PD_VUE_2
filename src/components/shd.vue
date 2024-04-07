@@ -478,16 +478,6 @@ export default {
             await this.setConvergDialogAct()
           }
         },
-        videoDialog:{
-          get(){
-            console.log('getVideoDialog', this.getVideoDialog)
-            return this.getVideoDialog
-          },
-          async set(){
-            console.log('setConvergDialog')
-            await this.setVideoDialogAct()
-          }
-        },
         storeDialog:{
           get(){
             console.log('getStoreDialog', this.getStoresDialog)
