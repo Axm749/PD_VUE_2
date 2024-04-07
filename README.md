@@ -22,9 +22,13 @@ yarn build
 
 ### Lints and fixes files
 ```
-yarn lint //hi-hi
+yarn lint
 ```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 # PD_VUE_2
+
+это проект по созданию программы рассчета систем хранения на основании входных требований пользователя. Выполнен с использованием фреймворка VUE.js, а также библиотек vuex и vuetify.
+
+# Разработка ведётся силами студентов РУТ (МИИТ)
