@@ -187,12 +187,12 @@
                     @click="addZone" 
                     color="primary" 
                     class="mt-5"
-                >Добавить зону</v-btn>
+                >Добавить</v-btn>
                 <v-btn 
                     @click="resetZone" 
                     color="primary" 
-                    class="mt-5"
-                >Сбросить зоны</v-btn>
+                    class="mt-5 ml-2"
+                >Сброс</v-btn>
 
             </v-card>
             <!-- вывод -->
@@ -273,10 +273,10 @@ export default {
             let FPS = 30;
             this.check_len()
             this.Angle_Height_LowFieldOfView = +this.cam_angle-(+this.Vertical_cam_angle/2)
-            console.log(this.Angle_Height_LowFieldOfView)
+            // console.log(this.Angle_Height_LowFieldOfView)
 
             this.L_blind = (+this.Cam_height*Math.tan(this.Angle_Height_LowFieldOfView*Math.PI/180)).toFixed(5)
-            console.log(this.L_blind)
+            // console.log(this.L_blind)
             if((+this.Camera_reach - this.L_blind) <=0){
                 alert ('Ошибка!')
             }if (this.L_blind <0){
@@ -285,113 +285,116 @@ export default {
             this.get_dx()
             this.Total_Resolution = +this.Resolution_X*+this.Resolution_Y
             for (this.i = 1; this.i < +this.PPM_zones+1; this.i++){
-                console.log(`____________________current cycle №${this.i}____________________`);
-                console.log(`____________________f_param____________________`);
+                // console.log(`____________________current cycle №${this.i}____________________`);
+                // console.log(`____________________f_param____________________`);
                 this.get_f();
-                console.log(`____________________d_param____________________`);
+                // console.log(`____________________d_param____________________`);
                 this.get_d();
-                console.log(`____________________Bottom____________________`);
+                // console.log(`____________________Bottom____________________`);
                 this.get_Wigth1();
                 //bottom
-                console.log(`____________________Top____________________`);
+                // console.log(`____________________Top____________________`);
                 this.get_Wigth2();
                 //top
-                console.log(`____________________S_param____________________`);
+                // console.log(`____________________S_param____________________`);
                 this.trap();
-                console.log(`____________________Total_PPM____________________`);
+                // console.log(`____________________Total_PPM____________________`);
                 this.PPM_from_S()
 
                 
                 
                 this.Total += (+this.Total_Resolution * +this.d)
-                console.log('total',this.Total)
+                // console.log('total',this.Total)
                 this.result[this.i]= +this.Total_Resolution * +this.d
                 this.mBr = (+this.Total * FPS * +this.kodak).toFixed(5)
-                console.log(`Our bit rate: ${(this.mBr/(1024*1024)).toFixed(5)}`);
+                // console.log(`Our bit rate: ${(this.mBr/(1024*1024)).toFixed(5)}`);
                 this.final_mBR = (+this.mBr/(1024*1024)).toFixed(2)
+
+                // здесь будет обработчик ошибки, пока не успели ничего вставить
+
+                
                 localStorage.setItem('Bitrate', this.final_mBR)
                 this.$emit('cam_bitrate', this.final_mBR)
             }
         },
 
         degtoRad(degrees) {
-                console.log(`We got: ${degrees} deegrees.`)
+                // console.log(`We got: ${degrees} deegrees.`)
                 return degrees * (Math.PI/180)
         },
         radtoDeg(radians) {
-            console.log(`We got: ${radians} radians.`)
+            // console.log(`We got: ${radians} radians.`)
             return radians * (180/Math.PI);
         },
 
         get_dx(){
             this.dx = (+this.Camera_reach - this.L_blind) / +this.PPM_zones
-            console.log(`dx we calculated: ${this.dx}`)
+            // console.log(`dx we calculated: ${this.dx}`)
         },
         get_f(){
-            console.log('asdad',this.L_blind)
-            console.log(this.dx)
+            // console.log('asdad',this.L_blind)
+            // console.log(this.dx)
             this.L_big = +this.L_blind + (+this.dx * +this.i)
-            console.log(`L_big calculated: ${this.L_big}`)
+            // console.log(`L_big calculated: ${this.L_big}`)
             this.Temp_f_big = Math.atan(+this.L_big / +this.Cam_height)*180/Math.PI
-            console.log(`Temp_f_big calculated: ${this.Temp_f_big}`)
+            // console.log(`Temp_f_big calculated: ${this.Temp_f_big}`)
             this.L_small = (+this.L_blind + (+this.dx * (+this.i - 1)))
-            console.log(`L_small calculated: ${this.L_small}`)
+            // console.log(`L_small calculated: ${this.L_small}`)
             this.Temp_f_small = Math.atan(+this.L_small / +this.Cam_height)*180/Math.PI
-            console.log(`Temp_f_small calculated: ${this.Temp_f_small}`)
+            // console.log(`Temp_f_small calculated: ${this.Temp_f_small}`)
 
             if (+this.Camera_reach < ((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)){
-                console.log(` Something ain't right. ${((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)} is bigger than ${+this.Camera_reach}`)
+                console.log(` Something is not right. ${((+this.L_blind + (+this.dx * +this.i))/+this.Cam_height)} is bigger than ${+this.Camera_reach}`)
             }
 
             this.f = +this.Temp_f_big -+ this.Temp_f_small
-            console.log(`f we got from calculations: ${this.f}`)
+            // console.log(`f we got from calculations: ${this.f}`)
         },
         
         get_Wigth1(){
             this.HIPOTENUSE = Math.sqrt(((+this.L_blind+(+this.i) * +this.dx)*(+this.L_blind+(+this.i) * +this.dx))+(+this.Cam_height*+this.Cam_height));
-            console.log(`HIPOTENUSE: ${this.HIPOTENUSE} !!!`);
+            // console.log(`HIPOTENUSE: ${this.HIPOTENUSE} !!!`);
             this.bottom = (2 * +this.HIPOTENUSE * Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180)).toFixed(5)
-            console.log(`width we got: ${this.bottom}`)
+            // console.log(`width we got: ${this.bottom}`)
         },
         get_Wigth2(){
             this.HIPOTENUSE1 = Math.sqrt(((+this.L_blind+(+this.i-1) * +this.dx)*(+this.L_blind+(+this.i-1) * +this.dx))+(+this.Cam_height*+this.Cam_height));
-            console.log(`HIPOTENUSE: ${this.HIPOTENUSE1} !!!`);
-            console.log('tan',Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180))
-            console.log('hor', this.Horizontal_cam_angle)
+            // console.log(`HIPOTENUSE: ${this.HIPOTENUSE1} !!!`);
+            // console.log('tan',Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180))
+            // console.log('hor', this.Horizontal_cam_angle)
             this.top = (2 * +this.HIPOTENUSE1 * Math.tan(+this.Horizontal_cam_angle/2*Math.PI/180)).toFixed(5)
-            console.log(`width we got: ${this.top}`)
+            // console.log(`width we got: ${this.top}`)
         },
         get_d(){
             this.d = (this.f/this.Vertical_cam_angle).toFixed(5)
-            console.log(`the calculation of d param: ${this.d}`);
+            // console.log(`the calculation of d param: ${this.d}`);
         },
         trap(){
-            console.log(this.top)
+            // console.log(this.top)
             this.S[this.i] = (+this.top * +this.dx + ((+this.bottom - +this.top) / 2) * +this.dx).toFixed(5)
-            console.log(`S we got: ${this.S[this.i]}`)
+            // console.log(`S we got: ${this.S[this.i]}`)
             
         },
         PPM_from_S(){
             this.PPM[this.i] = ((+this.Total_Resolution * +this.d) / +this.S[this.i]).toFixed(5);
-            console.log(`PPM of zone ${+this.i} is equal to: ${+this.PPM[this.i]}`);
-            console.log(`Pixels in that zone: ${+this.Total_Resolution * +this.d}`)
+            // console.log(`PPM of zone ${+this.i} is equal to: ${+this.PPM[this.i]}`);
+            // console.log(`Pixels in that zone: ${+this.Total_Resolution * +this.d}`)
         },
         check_len(){
             this.Outer_angle = ( this.cam_angle + (this.Vertical_cam_angle/2))
             this.Real_L_max = (this.Cam_height * Math.tan(this.Outer_angle*Math.PI/180)).toFixed(5)
-            console.log(`Результаты функции CHECK_LEN Outer: ${this.Outer_angle}, Real L_max: ${this.Real_L_max}`);
+            // console.log(`Результаты функции CHECK_LEN Outer: ${this.Outer_angle}, Real L_max: ${this.Real_L_max}`);
             if (this.Outer_angle >= 90){
-                console.log(`All good.`)
+                // console.log(`All good.`)
                 return 0
             } if ( this.Camera_reach >= this.Real_L_max){
-                this.accept = confirm(`при введенных параметрах, реальная максимальная дальность будет ${this.Real_L_max},
-                значит какие-то параметры введены неверно. Вы хотите продолжить с реальной максимальной дальностью?`)
+                this.accept = confirm(`при введенных параметрах, реальная максимальная дальность будет ${this.Real_L_max}, значит какие-то параметры введены неверно. Продолжить с реальной максимальной дальностью?`)
                 if ( this.accept === true) {
-                    console.log(`Продолжаем с тем, что есть, хорошо.`);
+                    console.log(`Продолжаем с введёнными данными.`);
                     this.Camera_reach = this.Real_L_max;
-                    console.log(this.Camera_reach);
+                    // console.log(this.Camera_reach);
                 } else {
-                    alert(`Ну типо ошибка, да?`)
+                    alert(`Ошибка, введённые данные могут быть неверны`)
                 }
             }
         },
@@ -420,26 +423,26 @@ export default {
 <style>
 
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 0px;
   }
 
   /* Track */
-  ::-webkit-scrollbar-track {
+  /* ::-webkit-scrollbar-track {
     background: #d2c8c8;
     grid-template-columns: repeat(3, 1fr);
   }
   .mycols {
   display: grid;
-}
+} */
   /* Handle */
-  ::-webkit-scrollbar-thumb {
+  /* ::-webkit-scrollbar-thumb {
     background: rgb(148, 148, 156);
-  }
+  } */
 
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+  /* ::-webkit-scrollbar-thumb:hover {
     background: #555;
-  }
+  } */
   
 .v-dialog{
     box-shadow: none;

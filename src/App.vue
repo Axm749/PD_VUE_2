@@ -89,6 +89,7 @@
         v-if="irregularView"
         :class="noMargins === true ? 'ma-0 mt-5' : 'ma-2 module_bg'"
       >
+        <!-- добавить свойство v-model="panel" -->
         <v-expansion-panels
           multiple
           accordion
@@ -161,6 +162,7 @@ export default {
   data: () => ({
     irregularView: true,
     noMargins: true,
+    // panel: [0,1,2]
   }),
 
   methods:{
@@ -196,8 +198,9 @@ export default {
         this.irregularView = false
       }
 
-      document.documentElement.style.setProperty("--main-background-color", "green");
 
+
+      // this.panel = []
 
     }
 };
