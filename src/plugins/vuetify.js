@@ -11,18 +11,18 @@ export default new Vuetify({
     theme: {
         themes: {
           light: {
-            primary: colors.green.lighten1, // #E53935
-            secondary: colors.lightGreen.lighten2, // #FFCDD2
-            accent: colors.green.accent1, // #3F51B5
-            error: colors.red.darken2,
-            success: colors.lightGreen.lighten2,
-            
-
-            // primary: colors.blue.lighten1, // #E53935
+            // primary: colors.green.lighten1, // #E53935
             // secondary: colors.lightGreen.lighten2, // #FFCDD2
             // accent: colors.green.accent1, // #3F51B5
             // error: colors.red.darken2,
-            // success: colors.lightGreen.lighten2
+            // success: colors.lightGreen.lighten2,
+            
+
+            primary: colors.blue.lighten1, // #E53935
+            secondary: colors.lightGreen.lighten2, // #FFCDD2
+            accent: colors.green.accent1, // #3F51B5
+            error: colors.red.darken2,
+            success: colors.lightGreen.lighten2
             
           },
           dark:{

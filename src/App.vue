@@ -1,8 +1,11 @@
 <template>
   <v-app>
-    <div :class="$vuetify.theme.dark==false ? 'body_light' : 'body_dark'">
+    <div 
+      :class="$vuetify.theme.dark==false ? 'body_light' : 'body_dark mb-0'"
+    >
       <!-- шапка при необходимости -->
-      
+
+
       <!-- настройки -->
       <div 
         :class="noMargins === true ? 'ma-0' : 'ma-2 module_bg'"
@@ -223,8 +226,8 @@ body{
 }
 
 .body_light{
-  /* background-image: linear-gradient( 0deg, #2ebf91, #4286f4); */
-  background-image: linear-gradient( 120deg, #33691E, #4DD0E1);
+  background-image: linear-gradient( 0deg, #2ebf91, #4286f4);
+  /* background-image: linear-gradient( 120deg, #33691E, #4DD0E1); */
   height: 100%;
   background-size: 200% 200%;
   animation: bg 5s ease infinite;
@@ -234,6 +237,8 @@ body{
   /* background-image: linear-gradient( 120deg, #1f0000, #1e0013); */
   background-image: linear-gradient( 120deg, #000000, #370000);
   color: #111;
+
+
   /* background-color: #000000; */
   height: 100%;
   background-size: 200% 200%;
